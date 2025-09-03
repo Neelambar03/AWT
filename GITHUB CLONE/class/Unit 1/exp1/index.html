@@ -1,0 +1,16 @@
+<!-- when the button with id "btn" is clicked in this code -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Button Click Example</title>
+</head>
+<body>
+  <button id="btn">Click Me</button>
+  <div id="content">Hello World</div>
+  <script>
+    document.getElementById("btn").addEventListener("click", function() {
+      document.getElementById("content").style.color = "red";
+    });
+  </script>
+</body>
+</html>

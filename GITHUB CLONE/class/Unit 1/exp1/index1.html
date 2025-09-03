@@ -1,0 +1,11 @@
+<button id="btn">Change Color</button>
+<div id="content">This is some content.</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#btn").click(function() {
+      $("#content").css("color", "red");
+    });
+  });
+</script>
