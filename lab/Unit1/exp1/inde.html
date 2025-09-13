@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>jQuery Fully Functional Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table,
+        td {
+            border: 1px solid #333;
+            border-collapse: collapse;
+            padding: 6px;
+        }
+
+        #messageDiv {
+            display: none;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #444;
+        }
+
+        #scrollTopImg {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+
+        section {
+            height: 400px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>jQuery Events Demo</h1>
+
+    <!-- Scroll Buttons -->
+    <p id="scrollTopImg">Scroll to Top</p>
+    <button id="scrollBtn">Scroll to Section 2</button>
+
+    <!-- Paragraph hover -->
+    <p>Hover over this paragraph to see color change.</p>
+    <p>Another paragraph with hover effect.</p>
+
+    <!-- Table hover -->
+    <table>
+        <tr>
+            <td>Row 1</td>
+        </tr>
+        <tr>
+            <td>Row 2</td>
+        </tr>
+        <tr>
+            <td>Row 3</td>
+        </tr>
+    </table>
+
+    <!-- Show/Hide/Toggle -->
+    <div>
+        <button id="showBtn">Show</button>
+        <button id="hideBtn">Hide</button>
+        <button id="toggleBtn">Toggle</button>
+    </div>
+    <div id="messageDiv">This is a message box.</div>
+
+    <!-- Fade In / Fade Out -->
+    <div>
+        <button id="fadeInBtn">Fade In</button>
+        <button id="fadeOutBtn">Fade Out</button>
+    </div>
+
+    <!-- Sections for scroll demo -->
+    <section id="section1">Section 1 (scroll down)</section>
+    <section id="section2">Section 2 (target)</section>
+
+    <!-- All JS code in one place -->
+    <script>
+        $(document).ready(function () {
+            // Prevent right-click, text selection, and Ctrl+C
+            $(document).on("contextmenu selectstart", function (e) { e.preventDefault(); });
+            $(document).on("keydown", function (e) { if (e.ctrlKey && e.keyCode === 67) e.preventDefault(); });
+
+            // Scroll animations
+            $("#scrollTopImg").click(function () { $("html, body").animate({ scrollTop: 0 }, 500); });
+            $("#scrollBtn").click(function () { $("html, body").animate({ scrollTop: $("#section2").offset().top }, 500); });
+
+            // Paragraph hover color change
+            $("p").hover(
+                function () { $(this).css("color", "red"); },
+                function () { $(this).css("color", ""); }
+            );
+
+            // Table row hover background
+            $("tr").hover(
+                function () { $(this).css("background", "yellow"); },
+                function () { $(this).css("background", ""); }
+            );
+
+            // Show / Hide / Toggle
+            $("#showBtn").click(function () { $("#messageDiv").show(); });
+            $("#hideBtn").click(function () { $("#messageDiv").hide(); });
+            $("#toggleBtn").click(function () { $("#messageDiv").toggle(); });
+
+            // Fade In / Fade Out
+            $("#fadeInBtn").click(function () { $("#messageDiv").fadeIn(); });
+            $("#fadeOutBtn").click(function () { $("#messageDiv").fadeOut(); });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Add Class Demo</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div>
+    
+    <section id="add-class">
+      <h2>Add a class to an element</h2>
+      <p id="para">This paragraph will change class when you click the button.</p>
+      <button id="btn-add">Add .highlight</button>
+    </section>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Toggle the highlight class on click
+      $("#btn-add").click(function() {
+        $("#para").toggleClass("highlight");
+      });
+    });
+  </script>
+</body>
+</html>
