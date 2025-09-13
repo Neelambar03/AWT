@@ -1,0 +1,113 @@
+[
+    {
+        "type": "class",
+        "name": "The button with id btn is clicked changes the text color",
+        "url": "./class/unit1/exp1/"
+    },
+
+    {
+        "type": "class",
+        "name": "HTML file that measures and displays the time taken to load jQuery locally.",
+        "url": "./class/unit1/exp2/"
+    },
+
+    {
+        "type": "class",
+        "name": "The jQuery code changes the text color of the div with id content to blue by modifying its CSS color property",
+        "url": "./class/unit1/exp3/"
+    },
+
+    {
+        "type": "class",
+        "name": "Blank",
+        "url": "./class/unit1/exp4/"
+    },
+
+   
+
+    {
+        "type": "class",
+        "name": "he controller set and display the message on the webpage using $scope.",
+        "url": "./class/Unit2/exp1/"
+    },
+
+
+    {
+        "type": "class",
+        "name": "AngularJS update the greeting when the user types their name",
+        "url": "./class/Unit2/exp2/"
+    },  
+
+    {
+        "type": "class",
+        "name": "ng-model and ng-bind work together to display user input in real-time",
+        "url": "./class/Unit2/exp3/"
+    },
+
+    {
+        "type": "class",
+        "name": "the purpose of ng-init and how does ng-bind display data",
+        "url": "./class/Unit2/exp4/"
+    },
+
+    {
+        "type": "class",
+        "name": "the output of the expressions {{ 5 + 5 }} and {{3/2 }} in AngularJS",
+        "url": "./class/Unit2/exp5/"
+    },
+
+    {
+        "type": "class",
+        "name": "using {{name}} for binding differ from ng-bind= name in AngularJS",
+        "url": "./class/Unit2/exp6/"
+    },
+
+    {
+        "type": "class",
+        "name": "using {{name}} for binding differ fromng-bind= name in AngularJS",
+        "url": "./class/Unit2/exp7/"
+    },
+
+    {
+        "type": "class",
+        "name": "Blank",
+        "url": "./class/Unit2/exp8/"
+    },
+
+    {
+        "type": "class",
+        "name": "Blank",
+        "url": "./class/Unit2/exp9/"
+    },
+    
+    {
+        "type": "lab",
+        "name": "Lab1",
+        "url": "./lab/Unit1/exp1/"
+    },
+
+    {
+        "type": "lab",
+        "name": "lab2",
+        "url": "./lab/Unit1/exp2/"
+    },
+
+    {
+        "type": "lab",
+        "name": "the AngularJS orderBy filter work in sorting the students table dynamically",
+        "url": "./lab/Unit2/exp3/"
+    },
+
+    {
+        "type": "lab",
+        "name": "Lab4",
+        "url": "./lab/Unit2/exp4/"
+    },
+
+    {
+        "type": "lab",
+        "name": "Blank",
+        "url": "./lab/Unit2/exp5/"
+    }
+
+]

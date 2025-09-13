@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>590018794</title>
+    <script src="./jquery-3.7.1.min.js"></script>
+    <script src="./angular.min.js"></script>
+    <link rel="stylesheet" href="./style1.css">
+    <script src="./script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Date & Time -->
+        <div id="datetime"></div>
+
+        <!-- jQuery Section -->
+        <div id="jquery">
+            <h1>AWT Progress Neelambar</h1>
+            <section>
+                <h4>Links updated using jQuery</h4>
+                <div>
+                    <h2>Class</h2>
+                    <ul id="class"></ul>
+                </div>
+                <div>
+                    <h2>Lab</h2>
+                    <ul id="lab"></ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- AngularJS Section -->
+        <div id="angular" ng-app="myCtrl" ng-controller="myCtrl">
+            <h1>AWT Progress</h1>
+            <section>
+                <h4>Links updated using AngularJS</h4>
+                <div>
+                    <h2>Class</h2>
+                    <ul>
+                        <li ng-repeat="link in classlinks">
+                            <a href="{{link.url}}" target="_blank">{{link.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Lab</h2>
+                    <ul>
+                        <li ng-repeat="link in lablinks">
+                            <a href="{{link.url}}" target="_blank">{{link.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <script>
+                var app = angular.module('myCtrl', []);
+                app.controller('myCtrl', function ($scope, $http) {
+                    $http.get('./linksjson.json').then(function (response) {
+                        $scope.classlinks = response.data.filter(link => link.type === 'class');
+                        $scope.lablinks = response.data.filter(link => link.type === 'lab');
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    <!-- jQuery Script -->
+    <script>
+        $(document).ready(function () {
+            $.getJSON("./linksjson.json", function (links) {
+                links.forEach(link => {
+                    var { type, url, name } = link;
+                    $(`#${type}`).append(`<li><a href="${url}" target="_blank">${name}</a></li>`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
