@@ -1,3 +1,85 @@
+/* Container to control layout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212; /* dark theme */
+    color: #fff;
+}
+
+/* Floating, fixed datetime box */
+#datetime {
+    position: fixed;           /* stays in place while scrolling */
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(30, 30, 30, 0.85); /* semi-transparent for floating feel */
+    color: #f5f5f5;
+    padding: 16px 24px;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6); /* deeper shadow for floating effect */
+    font-size: 1.2rem;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    border: 1px solid #444;
+    transition: all 0.3s ease;
+    max-width: 300px;
+    text-align: right;
+    user-select: none;
+    backdrop-filter: blur(6px); /* glassy floating effect */
+    animation: fadeOutOnly 3s ease-in-out 2s forwards; /* fade after 2s */
+}
+
+/* Hover effect */
+#datetime:hover {
+    background-color: rgba(44, 44, 44, 0.95);
+    color: #90caf9;
+    transform: scale(1.05);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
+}
+
+/* Label for 12-hour format */
+#datetime::after {
+    content: "🕒 12-hour format";
+    display: block;
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 8px;
+    font-style: normal;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    #datetime {
+        font-size: 1rem;
+        padding: 12px 16px;
+        right: 10px;
+        top: 10px;
+        max-width: 90%;
+    }
+}
+
+/* Fade-out animation */
+@keyframes fadeOutOnly {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 :root {
   --paper-width: 820px;
   --paper-pad: 2.2rem;
