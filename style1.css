@@ -80,7 +80,7 @@ ul li a {
 /* Hover effects */
 ul li a:hover {
     text-decoration: underline;
-    color: #d14;
+    color:gray;
 }
 
 ul li:hover {
