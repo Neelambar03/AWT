@@ -10,7 +10,7 @@
     {
         "type": "class",
         "name": "EXP1 button with id btn is clicked changes the text color.",
-        "url": "./class/unit1/exp1/"
+        "url": "./class/Unit1/exp1/"
     },
 
 
@@ -18,13 +18,13 @@
     {
         "type": "class",
         "name": "EXP2 HTML file that measures and displays the time taken to load jQuery locally.",
-        "url": "./class/unit1/exp2/"
+        "url": "./class/Unit1/exp2/"
     },
 
     {
         "type": "class",
         "name": "EXP3 The jQuery code changes the text color of the div with id content to blue by modifying its CSS color property",
-        "url": "./class/unit1/exp3/"
+        "url": "./class/Unit1/exp3/"
     },
 
     {
@@ -89,6 +89,20 @@
         "name": "Blank",
         "url": "./class/Unit2/exp9/"
     },
+
+     {
+        "type": "class",
+        "name": "Unit3 Node JS",
+        "url": " "
+    },
+
+     {
+        "type": "class",
+        "name": "EXP1 ",
+        "url": "./class/Unit3/exp1/"
+    },
+
+
     
     {
         "type": "lab",
