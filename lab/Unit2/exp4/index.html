@@ -4,10 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AngularJS Order Management</title>
+  <title>Simple AngularJS Order Management</title>
 
+  <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <script src="app.js"></script>
+
+  <!-- jsPDF and html2canvas for PDF download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -38,7 +44,10 @@
     <label>Order Name (unique ID):
       <input type="text" name="name" ng-model="newRecord.name" required />
     </label>
-    <label>Amount:
+    <label>Quantity:
+      <input type="number" name="quantity" ng-model="newRecord.quantity" required min="1" />
+    </label>
+    <label>Amount (per unit):
       <input type="number" name="amount" ng-model="newRecord.amount" required min="0" />
     </label>
     <button type="submit" ng-disabled="billForm.$invalid">Add</button>
@@ -47,35 +56,45 @@
   <hr />
 
   <h2>Order Records</h2>
-  <table ng-if="records.length > 0">
-    <thead>
-      <tr>
-        <th>Order ID / Name</th>
-        <th>Amount</th>
-        <th>Order Date & Time</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="r in records">
-        <td>{{ r.name }}</td>
-        <td class="right">{{ r.amount | currency:'₹' }}</td>
-        <td>{{ r.timestamp | date:'medium' }}</td>
-        <td><button ng-click="remove(r)">Delete</button></td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td><strong>Total</strong></td>
-        <td class="right"><strong>{{ total() | currency:'₹' }}</strong></td>
-        <td colspan="2"></td>
-      </tr>
-    </tfoot>
-  </table>
+  <div id="ordersTable">
+    <table ng-if="records.length > 0">
+      <thead>
+        <tr>
+          <th>Order ID / Name</th>
+          <th>Quantity</th>
+          <th>Amount (₹ per unit)</th>
+          <th>Total (₹)</th>
+          <th>Order Date & Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="r in records">
+          <td>{{ r.name }}</td>
+          <td class="right">{{ r.quantity }}</td>
+          <td class="right">{{ r.amount | currency:'₹' }}</td>
+          <td class="right">{{ (r.quantity * r.amount) | currency:'₹' }}</td>
+          <td>{{ r.timestamp | date:'medium' }}</td>
+          <td><button ng-click="remove(r)">Delete</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td class="right"><strong>{{ totalQuantity() }}</strong></td>
+          <td></td>
+          <td class="right"><strong>{{ totalAmount() | currency:'₹' }}</strong></td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
   <p ng-if="records.length === 0">No records yet. Add some orders above.</p>
 
-  <button ng-click="downloadRecords()" ng-disabled="records.length === 0">Download Orders</button>
+  <button ng-click="downloadPDF()" ng-disabled="records.length === 0">Download Orders as PDF</button>
+  <button ng-click="downloadJSON()" ng-disabled="records.length === 0">Download Orders as JSON</button>
 
+  <script src="app.js"></script>
 </body>
 
 </html>
