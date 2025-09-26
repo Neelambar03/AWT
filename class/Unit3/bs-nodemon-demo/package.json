@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "dev:server": "nodemon server.js",
+    "dev:bs": "browser-sync start --config bs-config.js",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:bs\""
+  }
+}
