@@ -1,26 +1,26 @@
-// Import required modules
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-
-// Use Render's assigned port or default to 3000 locally
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// Session configuration
+// Session setup
 app.use(session({
-  secret: 'mysecretkey',          // Change this in production
+  secret: 'mysecretkey',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 60 * 1000 }   // 1 minute
+  cookie: { maxAge: 60 * 1000 } // 1 minute
 }));
 
-// Routes
+// Health check route for Render
+app.get('/healthz', (req, res) => res.send('OK'));
+
+// Home route
 app.get('/', (req, res) => {
   if (req.session.username) {
     res.send(`
@@ -38,9 +38,9 @@ app.get('/', (req, res) => {
   }
 });
 
+// Login
 app.post('/login', (req, res) => {
   const { username } = req.body;
-
   if (username && username.trim() !== '') {
     req.session.username = username.trim();
     res.cookie('theme', 'dark', { maxAge: 15 * 60 * 1000, httpOnly: true });
@@ -50,9 +50,10 @@ app.post('/login', (req, res) => {
   }
 });
 
+// Logout
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.clearCookie('connect.sid'); // clear session cookie
+    res.clearCookie('connect.sid');
     res.redirect('/');
   });
 });
