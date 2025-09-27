@@ -3,7 +3,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -12,10 +12,10 @@ app.use(session({
   secret: 'mysecretkey',
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 60000 } // 1 minute
 }));
 
-// Home
+// Home route
 app.get('/', (req, res) => {
   if (req.session.username) {
     res.send(`Welcome back, ${req.session.username}! <a href="/logout">Logout</a>`);
