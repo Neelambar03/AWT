@@ -1,0 +1,19 @@
+node_modules/
+.env
+
+
+---
+
+# How to Deploy on Render
+
+- Push all files to GitHub.
+- On Render, create a new **Web Service**.
+- Connect your GitHub repo.
+- Use build command: `npm install`
+- Use start command: `npm start`
+- Render will use the environment variable `PORT` automatically.
+- Your app will be live on Render’s generated URL.
+
+---
+
+If you want me to help with generating the exact commands for GitHub or deployment, just ask!
