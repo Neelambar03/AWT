@@ -1,15 +1,18 @@
 {
-  "name": "experiment7",
+  "name": "experiment7-session-cookie",
   "version": "1.0.0",
-  "description": "Node.js Session and Cookie demo app",
-  "main": "server/full-login-app.js",
+  "description": "Experiment 7 - Node.js sessions and cookies management",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/full-login-app.js"
+    "start": "node Source/server.js",
+    "session": "node Source/session-example.js",
+    "cookie": "node Source/cookie-example.js"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.7",
-    "express": "^4.21.2",
-    "express-session": "^1.18.2"
-  }
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "cookie-parser": "^1.4.6"
+  },
+  "author": "Your Name",
+  "license": "MIT"
 }

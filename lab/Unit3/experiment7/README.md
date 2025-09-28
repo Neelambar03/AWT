@@ -1,15 +1,13 @@
-# Experiment 7: Node.js Sessions & Cookies
+# Experiment 7: Using Node.js to Manage Sessions & Cookies
 
-## Contents
+## Overview
+This experiment demonstrates how to manage user sessions and cookies in Node.js using Express.
 
-- Session Demo
-- Cookie Demo
-- Full Login Flow
-- To-Do Manager (via session)
-- Concepts of Session and Cookie
+## Folder Structure
+- `Source/session-example.js` - Basic session management example.
+- `Source/cookie-example.js` - Basic cookie management example.
+- `Source/server.js` - Combined example with login, sessions, and cookies.
 
-## Instructions
-
-1. Run `npm install`
-2. Start the app: `npm start`
-3. Visit: `http://localhost:3000`
+## Setup
+```bash
+npm install
