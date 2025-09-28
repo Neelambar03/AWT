@@ -27,3 +27,12 @@
 ### 4. Array Iteration
 - GET `/iterate`
 - Returns different iteration methods on an array `[10, 20, 30, 40, 50]`
+
+
+# NodeJS Lab Exercises
+
+## How to Run Locally
+
+1. Install dependencies:
+   ```bash
+   npm install

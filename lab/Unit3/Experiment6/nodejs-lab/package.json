@@ -1,16 +1,18 @@
 {
   "name": "nodejs-lab",
   "version": "1.0.0",
-  "description": "NodeJS basic exercises lab",
+  "description": "NodeJS basic experiments lab",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
   "keywords": ["nodejs", "express", "lab"],
   "author": "Your Name",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
