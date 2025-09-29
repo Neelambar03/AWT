@@ -1,0 +1,16 @@
+{
+  "name": "exp7",
+  "version": "1.0.0",
+  "description": "Experiment 7: Sessions & Cookies in Node.js (Beginner Friendly)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "session": "node session-example.js",
+    "cookie": "node cookie-example.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "cookie-parser": "^1.4.7"
+  }
+}
