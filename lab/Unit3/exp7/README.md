@@ -7,95 +7,20 @@ This project shows how to use **sessions** and **cookies** with Node.js + Expres
 
 ## 🚀 How to Run
 
-1. Install dependencies:
-   ```bash
-   npm install
+Step-by-Step: exp7 – Full Project
 
-
-1. Check Node.js & npm
-
-Make sure Node.js is installed:
-
-node -v
-npm -v
-
-
-If not installed → download from https://nodejs.org
-.
-
-2. Create project folder
-mkdir exp7
-cd exp7
-
-3. Initialize Node.js project
-npm init -y
-
-
-👉 This creates a basic package.json.
-
-4. Install dependencies
-npm install express express-session cookie-parser
-
-3. Run again in PowerShell
-Run session example:
-npm run session
-
-
-Open → http://localhost:3000
-
-Run cookie example:
-npm run cookie
-
-
-Open → http://localhost:3000/set
-
-Run login demo:
-npm start
-
-
-Open → http://localhost:3000
-
-
-
-All steps by step 
-
-Okay 👍 I’ll keep it **super simple and step-by-step**, with only what you need to run the cookie project (`exp7`).
-
----
-
-## Step 1: Create project folder
-
-```powershell
+Step 1: Create project folder
 cd Desktop\Neelambar\GITHUB\AWT\lab\Unit3
 mkdir exp7
 cd exp7
-```
 
----
-
-## Step 2: Initialize project
-
-```powershell
+Step 2: Initialize Node.js
 npm init -y
-```
 
-This will create a `package.json` file.
+Step 3: Install dependencies
+npm install express express-session cookie-parser
 
----
-
-## Step 3: Install dependencies
-
-```powershell
-npm install express cookie-parser
-```
-
----
-
-## Step 4: Create file `cookie-example.js`
-
-Inside `exp7` folder, make a file named **cookie-example.js** with this code:
-
-```js
+Step 4: Create cookie-example.js
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
@@ -116,7 +41,7 @@ app.get('/', (req, res) => {
 
 // Set a cookie
 app.get('/set', (req, res) => {
-    res.cookie('username', 'JohnDoe', { maxAge: 60000 }); // valid for 1 minute
+    res.cookie('username', 'JohnDoe', { maxAge: 60000 });
     res.send("Cookie has been set. <a href='/get'>Check cookie</a>");
 });
 
@@ -136,46 +61,123 @@ app.get('/delete', (req, res) => {
     res.send("Cookie deleted. <a href='/'>Back to Home</a>");
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+app.listen(PORT, () => console.log(`Cookie demo → http://localhost:${PORT}`));
+
+Step 5: Create session-example.js
+const express = require('express');
+const session = require('express-session');
+
+const app = express();
+const PORT = 3000;
+
+// Session middleware
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Home route
+app.get('/', (req, res) => {
+    if (req.session.views) {
+        req.session.views++;
+        res.send(`You visited this page ${req.session.views} times. <br><a href="/destroy">Destroy Session</a>`);
+    } else {
+        req.session.views = 1;
+        res.send("Welcome! Refresh the page to count visits.");
+    }
 });
-```
 
----
+// Destroy session
+app.get('/destroy', (req, res) => {
+    req.session.destroy(() => {
+        res.send("Session destroyed. <a href='/'>Back to Home</a>");
+    });
+});
 
-## Step 5: Add script in `package.json`
+app.listen(PORT, () => console.log(`Session demo → http://localhost:${PORT}`));
 
-Open **package.json** and inside `"scripts"` section, add:
+Step 6: Create server.js (Login + Session + Cookie Demo)
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
-```json
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+// Session middleware
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Home route
+app.get('/', (req, res) => {
+    if (req.session.username) {
+        res.send(`Hello ${req.session.username}! <a href="/logout">Logout</a>`);
+    } else {
+        res.send(`
+            <h2>Login Demo</h2>
+            <form action="/login" method="post">
+                <input type="text" name="username" placeholder="Enter username" required />
+                <button type="submit">Login</button>
+            </form>
+        `);
+    }
+});
+
+// Login route
+app.post('/login', (req, res) => {
+    const { username } = req.body;
+    req.session.username = username;
+    res.cookie('theme', 'dark'); // example cookie
+    res.redirect('/');
+});
+
+// Logout route
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
+});
+
+app.listen(PORT, () => console.log(`Login demo → http://localhost:${PORT}`));
+
+Step 7: Update package.json scripts
 "scripts": {
-  "cookie": "node cookie-example.js"
+    "cookie": "node cookie-example.js",
+    "session": "node session-example.js",
+    "start": "node server.js"
 }
-```
 
----
-
-## Step 6: Run the project
-
-```powershell
+Step 8: Run the demos
+Cookie demo
 npm run cookie
-```
 
-If successful, you will see:
 
-```
-Server running at http://localhost:3000
-```
+Open → http://localhost:3000
 
----
+Session demo
+npm run session
 
-## Step 7: Test in browser
 
-* Open: [http://localhost:3000](http://localhost:3000)
-* Click **Set Cookie** → then **Get Cookie** → then **Delete Cookie**
+Open → http://localhost:3000
 
----
+Login demo
+npm start
 
-That’s the full step-by-step terminal + code for cookie demo.
 
-Do you want me to now write the **same full step-wise guide for sessions** also?
+Open → http://localhost:3000
+
+Step 9: Push to GitHub
+git init
+git add .
+git commit -m "Initial commit: exp7 full demo"
+git branch -M main
+git remote add origin https://github.com/your-username/exp7.git
+git push -u origin main
