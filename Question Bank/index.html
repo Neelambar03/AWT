@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Question Bank — jQuery & AngularJS (Answers)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        .q {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        pre {
+            background: #eee;
+            padding: 10px;
+            overflow-x: auto;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
+        .hint {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #999;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Question Bank — jQuery &amp; AngularJS &ndash; Answers (Concise)</h1>
+    <p class="hint">Answers are concise, follow the suggested key points and include required code snippets/diagrams
+        labels where indicated.</p>
+
+    <h2>Section A &ndash; 5 Marks Questions (20)</h2>
+
+    <div class="q">
+        <h3>1. Define jQuery. Why is it called "write less, do more"?</h3>
+        <p><strong>Answer:</strong> jQuery is a lightweight JavaScript library that simplifies HTML DOM
+            traversal/manipulation, event handling, animation and AJAX. "Write less, do more" means common tasks require
+            fewer lines of code than plain JavaScript due to concise selectors and utility methods.</p>
+    </div>
+
+    <div class="q">
+        <h3>2. Syntax to include jQuery in a webpage</h3>
+        <pre>&lt;!-- CDN --&gt;
+&lt;script src="https://code.jquery.com/jquery-3.6.0.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Local copy --&gt;
+&lt;script src="js/jquery.min.js"&gt;&lt;/script&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>3. Differentiate between id and class selectors in jQuery</h3>
+        <p><strong>Answer:</strong> <code>$("#id")</code> selects a single element by its id (unique).
+            <code>$(".class")</code> selects one or more elements with that class. Example:
+            <code>$("#header").hide(); $(".item").addClass("active");</code>
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>4. Role of ready() in jQuery</h3>
+        <p><strong>Answer:</strong> <code>$(document).ready(function(){ ... });</code> ensures the DOM is fully loaded
+            before running code so elements can be accessed reliably.</p>
+    </div>
+
+    <div class="q">
+        <h3>5. jQuery snippet to hide a paragraph on button click</h3>
+        <pre>&lt;button id="b"&gt;Hide&lt;/button&gt;
+&lt;p id="p"&gt;Some text&lt;/p&gt;
+&lt;script&gt;
+  $("#b").click(function(){
+    $("#p").hide();
+  });
+&lt;/script&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>6. Define AngularJS</h3>
+        <p><strong>Answer:</strong> AngularJS (1.x) is a client-side MVC/MVVM JavaScript framework by Google providing
+            two-way data binding, dependency injection, directives and services to build single-page applications.</p>
+    </div>
+
+    <div class="q">
+        <h3>7. What is ng-model in AngularJS?</h3>
+        <p><strong>Answer:</strong> <code>ng-model</code> binds form inputs (input, textarea, select) to properties on
+            the scope, enabling two-way data binding between view and model.</p>
+    </div>
+
+    <div class="q">
+        <h3>8. Differentiate between ng-show and ng-hide</h3>
+        <p><strong>Answer:</strong> <code>ng-show="expr"</code> sets CSS <code>display</code> based on truthiness (shown
+            when true). <code>ng-hide="expr"</code> hides when expression is true (inverse). Both toggle visibility
+            without removing element from DOM.</p>
+    </div>
+
+    <div class="q">
+        <h3>9. Short note on AngularJS expressions</h3>
+        <p><strong>Answer:</strong> Expressions ({{ ... }}) are evaluated against the current scope to render values.
+            They are not full JavaScript (no control flow) and are used for simple calculations and string
+            concatenation.</p>
+    </div>
+
+    <div class="q">
+        <h3>10. What is $scope in AngularJS?</h3>
+        <p><strong>Answer:</strong> <code>$scope</code> is the object that links controllers and views; it stores model
+            data and functions accessible in the template.</p>
+    </div>
+
+    <div class="q">
+        <h3>11. Any two advantages of jQuery over JavaScript</h3>
+        <ol>
+            <li>Cross-browser compatibility abstraction.</li>
+            <li>Concise syntax for DOM selection/manipulation and built-in effects/AJAX helpers.</li>
+        </ol>
+    </div>
+
+    <div class="q">
+        <h3>12. Syntax for chaining multiple filters in AngularJS</h3>
+        <p><strong>Answer:</strong> <code>{{ data | filter1 | filter2 }}</code> for sequential filter application.</p>
+    </div>
+
+    <div class="q">
+        <h3>13. List any three jQuery event methods</h3>
+        <p><strong>Answer:</strong> <code>click()</code>, <code>hover()</code>, <code>keydown()</code>. (Also
+            <code>on()</code>, <code>submit()</code>).
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>14. What is ng-repeat?</h3>
+        <p><strong>Answer:</strong> <code>ng-repeat="item in items"</code> repeats a DOM template for each item in a
+            collection, creating child scopes for each iteration.</p>
+    </div>
+
+    <div class="q">
+        <h3>15. Differentiate AngularJS directive and expression</h3>
+        <p><strong>Answer:</strong> Directives are markers (attributes/elements/classes) that extend HTML behavior
+            (<code>ng-model</code>, <code>ng-repeat</code>). Expressions evaluate and display values inside templates
+            ({{ }}).</p>
+    </div>
+
+    <div class="q">
+        <h3>16. Difference between text() and html() in jQuery</h3>
+        <p><strong>Answer:</strong> <code>.text()</code> gets/sets text content (escaped). <code>.html()</code>
+            gets/sets HTML content and can insert markup.</p>
+    </div>
+
+    <div class="q">
+        <h3>17. Explain AngularJS filters briefly</h3>
+        <p><strong>Answer:</strong> Filters format data for display (e.g., <code>currency</code>,
+            <code>uppercase</code>, <code>orderBy</code>, custom filters). Use in templates with <code>|</code> pipe.
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>18. Syntax to create a custom directive in AngularJS</h3>
+        <pre>&lt;script&gt;
+angular.module('app',[])
+  .directive('myDirective', function(){
+    return {
+      restrict: 'E',
+      template: '&lt;div&gt;Hello&lt;/div&gt;'
+    };
+  });
+&lt;/script&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>19. Define AJAX in jQuery</h3>
+        <p><strong>Answer:</strong> AJAX in jQuery refers to asynchronous HTTP requests using helpers like
+            <code>$.ajax()</code>, <code>$.get()</code>, <code>$.post()</code> to fetch/send data without reloading the
+            page.
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>20. Any two AngularJS form validation states</h3>
+        <p><strong>Answer:</strong> <code>$dirty</code> / <code>$pristine</code>, and <code>$valid</code> /
+            <code>$invalid</code>.
+        </p>
+    </div>
+
+    <h2>Section B &ndash; 15 Marks Questions (20)</h2>
+
+    <div class="q">
+        <h3>1. Explain jQuery DOM traversal methods with examples</h3>
+        <p><strong>Answer:</strong> <code>parent()</code> selects immediate parent; <code>children()</code> selects
+            direct children; <code>find(selector)</code> searches descendants; <code>siblings()</code> selects sibling
+            elements. Example:</p>
+        <pre>$('#list').children();
+$('#item').parent().addClass('p');
+$('#container').find('p.highlight');
+$('.active').siblings().removeClass('active');</pre>
+    </div>
+
+    <div class="q">
+        <h3>2. jQuery effects: fadeIn(), fadeOut(), slideUp(), slideDown()</h3>
+        <p><strong>Answer:</strong> Basic animations to change visibility over time.
+        <pre>$('#box').fadeIn(400);   // show with fade
+$('#box').fadeOut(400);  // hide with fade
+$('#panel').slideUp(300); // hide by sliding up
+$('#panel').slideDown(300); // show by sliding down
+// Can pass callback: $('#box').fadeIn(400, function(){ /* after complete */ });</pre>
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>3. Compare JavaScript, jQuery, and AngularJS</h3>
+        <p><strong>Answer:</strong>
+        <ul>
+            <li><strong>JavaScript:</strong> Language providing DOM API, events, XHR; imperative coding.</li>
+            <li><strong>jQuery:</strong> Library built on JS simplifying DOM selection/manipulation, events, animations,
+                AJAX; good for progressive enhancement.</li>
+            <li><strong>AngularJS:</strong> Full MVC/MVVM framework for building SPAs with two-way binding, dependency
+                injection, directives; more opinionated and declarative.</li>
+        </ul>
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>4. Explain AngularJS two-way data binding with an example</h3>
+        <p><strong>Answer:</strong> Changing model updates view and user input updates model automatically via
+            <code>ng-model</code>. Example:
+        </p>
+        <pre>&lt;input ng-model="name" /&gt;
+&lt;p&gt;Hello {{name}}&lt;/p&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>5. jQuery program to toggle visibility of a paragraph</h3>
+        <pre>&lt;button id="t"&gt;Toggle&lt;/button&gt;
+&lt;p id="p"&gt;Text&lt;/p&gt;
+&lt;script&gt;
+  $('#t').click(function(){
+    $('#p').toggle();
+  });
+&lt;/script&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>6. Explain AngularJS directives with any 3 examples</h3>
+        <p><strong>Answer:</strong>
+        <ul>
+            <li><code>ng-model</code>: binds input to scope property.</li>
+            <li><code>ng-repeat</code>: repeats DOM for collections.</li>
+            <li><code>ng-bind</code>: binds expression to element text to avoid flicker.</li>
+        </ul>
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>7. Differentiate between AngularJS controller and service</h3>
+        <p><strong>Answer:</strong> Controller: attaches data/functions to <code>$scope</code> for a view. Service:
+            singleton reusable component for business logic or data access injected via DI. Controllers are for view
+            logic; services for reusable logic.</p>
+    </div>
+
+    <div class="q">
+        <h3>8. Explain jQuery AJAX methods with example</h3>
+        <p><strong>Answer:</strong> <code>$.ajax()</code> for full control, <code>$.get()</code>/<code>$.post()</code>
+            shortcuts. Example:</p>
+        <pre>$.getJSON('data.json', function(data){
+  // process data
+});
+
+// or
+$.ajax({ url: '/api/items', method: 'GET', success: function(resp){ console.log(resp); } });</pre>
+    </div>
+
+    <div class="q">
+        <h3>9. What are AngularJS modules? Steps to create and use a module</h3>
+        <p><strong>Answer:</strong> Modules are containers for app parts (controllers, services, directives). Create
+            with <code>angular.module('app',[])</code>. Attach controller:
+            <code>angular.module('app').controller('MainCtrl', function($scope){...});</code>. Add
+            <code>ng-app="app"</code> to HTML root.
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>10. Explain AngularJS form validation with example</h3>
+        <p><strong>Answer:</strong> Use <code>ng-model</code> and HTML validation attributes like <code>required</code>,
+            <code>ng-minlength</code>. Example:
+        </p>
+        <pre>&lt;form name="f" novalidate&gt;
+  &lt;input name="email" ng-model="user.email" required type="email" /&gt;
+  &lt;div ng-show="f.email.$touched &amp;&amp; f.email.$invalid"&gt;Invalid email&lt;/div>
+&lt;/form&gt;</pre>
+    </div>
+
+    <div class="q">
+        <h3>11. Explain event delegation in jQuery. Why needed?</h3>
+        <p><strong>Answer:</strong> Event delegation attaches handler to a parent and specifies selector, e.g.
+            <code>$(parent).on('click', '.child', handler)</code>. Needed for dynamic elements added after binding and
+            for efficiency (fewer handlers).
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>12. Differentiate ng-bind and expressions ({{ }})</h3>
+        <p><strong>Answer:</strong> <code>ng-bind="expr"</code> sets element text without initial flicker (pre-binding).
+            {{expr}} is inline and may momentarily show raw template before Angular compiles.</p>
+    </div>
+
+    <div class="q">
+        <h3>13. Short note on AngularJS scope hierarchy</h3>
+        <p><strong>Answer:</strong> Scopes form a prototypal hierarchy: <code>$rootScope</code> at top; each
+            directive/controller may create child scopes inheriting prototypally. Changes propagate following scope
+            resolution rules.</p>
+    </div>
+
+    <div class="q">
+        <h3>14. Role of $http service in AngularJS with example</h3>
+        <p><strong>Answer:</strong> <code>$http</code> performs AJAX calls returning promises. Example:</p>
+        <pre>app.controller('C', function($scope, $http){
+  $http.get('/api/data').then(function(resp){ $scope.items = resp.data; });
+});</pre>
+    </div>
+
+    <div class="q">
+        <h3>15. jQuery code to validate a simple login form</h3>
+        <pre>$('#login').submit(function(e){
+  e.preventDefault();
+  var u = $('#user').val(), p = $('#pass').val();
+  if(!u){ alert('Enter username'); return; }
+  if(p.length &lt; 6){ alert('Password too short'); return; }
+  // submit via AJAX or form.submit()
+});</pre>
+    </div>
+
+    <div class="q">
+        <h3>16. Explain AngularJS filters with example of custom filter</h3>
+        <pre>app.filter('reverse', function(){
+  return function(input){ return (input||'').split('').reverse().join(''); };
+});
+
+// usage: {{ 'abc' | reverse }} -> 'cba'</pre>
+    </div>
+
+    <div class="q">
+        <h3>17. jQuery script to change CSS properties dynamically</h3>
+        <pre>$('.box').css({ 'font-size': '18px', 'background-color': '#f0f0f0' });
+// or
+$('#id').css('color','red');</pre>
+    </div>
+
+    <div class="q">
+        <h3>18. MVC architecture of AngularJS</h3>
+        <p><strong>Answer:</strong> Model = data on scope; View = HTML templates; Controller = sets up scope. Angular's
+            directives bind view and controller; $scope acts as bridge. The digest cycle keeps model &amp; view in sync.
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>19. Explain AngularJS $watch with example</h3>
+        <pre>$scope.$watch('value', function(newVal, oldVal){
+  if(newVal !== oldVal) { /* react to change */ }
+});
+// Used to run code when a scope expression changes.</pre>
+    </div>
+
+    <div class="q">
+        <h3>20. Difference between AngularJS 1.x and jQuery re: data binding</h3>
+        <p><strong>Answer:</strong> AngularJS is declarative and data-driven with two-way binding and templating; jQuery
+            is imperative DOM-manipulation focused where the developer updates DOM manually.</p>
+    </div>
+
+    <h2>Section C &ndash; 20 Marks Questions (10)</h2>
+
+    <div class="q">
+        <h3>1. Design a small jQuery-based image gallery with next/prev buttons</h3>
+        <p><strong>Answer (outline &amp; code):</strong></p>
+        <pre>&lt;div id="gallery"&gt;
+  &lt;img id="gimg" src="img1.jpg"/&gt;
+  &lt;button id="prev"&gt;Prev&lt;/button&gt;
+  &lt;button id="next"&gt;Next&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var imgs=['img1.jpg','img2.jpg','img3.jpg'];
+var i=0;
+$('#next').click(function(){ i=(i+1)%imgs.length; $('#gimg').attr('src', imgs[i]); });
+$('#prev').click(function(){ i=(i-1+imgs.length)%imgs.length; $('#gimg').attr('src', imgs[i]); });
+&lt;/script&gt;</pre>
+        <p>Explain: array of image paths, index update on click, update <code>src</code>. Use fadeIn/fadeOut for
+            transition.</p>
+    </div>
+
+    <div class="q">
+        <h3>2. AngularJS application for student result management (ng-repeat &amp; filters)</h3>
+        <p><strong>Answer (structure &amp; sample):</strong></p>
+        <pre>&lt;div ng-app="app" ng-controller="C"&gt;
+  &lt;input ng-model="q" placeholder="search"/&gt;
+  &lt;table&gt;
+    &lt;tr ng-repeat="s in students | filter:q | orderBy:'name'"&gt;
+      &lt;td&gt;{{s.name}}&lt;/td&gt;
+      &lt;td&gt;{{s.marks}}&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+
+app.controller('C', function($scope){
+  $scope.students = [{name:'A',marks:85},{name:'B',marks:72}];
+});</pre>
+        <p>Explain: ng-repeat iterates, filters search/order, can add custom filters for grade calculation.</p>
+    </div>
+
+    <div class="q">
+        <h3>3. Explain AngularJS form validation in detail with code</h3>
+        <pre>&lt;form name="regForm" novalidate&gt;
+  &lt;input name="email" ng-model="user.email" required type="email"/&gt;
+  &lt;span ng-show="regForm.email.$touched &amp;&amp; regForm.email.$invalid"&gt;Invalid email&lt;/span>
+  &lt;input name="pass" ng-model="user.pass" required ng-minlength="6"/&gt;
+  &lt;span ng-show="regForm.pass.$error.minlength"&gt;Too short&lt;/span>
+  &lt;button ng-disabled="regForm.$invalid"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+        <p>Explain: built-in states ($dirty, $pristine, $valid, $invalid), using $error to show messages, custom
+            validators via <code>$validators</code> or directives.</p>
+    </div>
+
+    <div class="q">
+        <h3>4. jQuery registration form validation (name,email,password,confirm)</h3>
+        <pre>$('#reg').submit(function(e){
+  e.preventDefault();
+  var name=$('#name').val(), email=$('#email').val(), p=$('#pass').val(), cp=$('#cpass').val();
+  var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!name){ alert('Name required'); return; }
+  if(!emailRe.test(email)){ alert('Invalid email'); return; }
+  if(p.length&lt;6){ alert('Password min 6'); return; }
+  if(p!==cp){ alert('Passwords do not match'); return; }
+  // submit
+});</pre>
+    </div>
+
+    <div class="q">
+        <h3>5. Explain AngularJS dependency injection with example</h3>
+        <p><strong>Answer:</strong> DI injects services by name into components. Example:
+            <code>app.controller('C', function($scope, $http){ ... });</code>. This makes components testable and
+            modular; services are singletons provided by Angular.
+        </p>
+    </div>
+
+    <div class="q">
+        <h3>6. Compare AngularJS Directives and Components</h3>
+        <p><strong>Answer:</strong> Directives extend DOM (attribute/element). Components (Angular 1.5+) are a special
+            directive configuration for building reusable UI with isolated scope and lifecycle hooks. Components
+            encourage one-way bindings and are easier to migrate to newer Angular.</p>
+    </div>
+
+    <div class="q">
+        <h3>7. Create jQuery + AJAX example to fetch and display data from JSON file</h3>
+        <pre>$.getJSON('students.json', function(data){
+  data.forEach(function(s){
+    $('#list').append('&lt;li&gt;'+s.name+' - '+s.marks+'&lt;/li&gt;');
+  });
+});</pre>
+    </div>
+
+    <div class="q">
+        <h3>8. Discuss the digest cycle in AngularJS (diagram label recommended)</h3>
+        <p><strong>Answer:</strong> The digest cycle checks watched expressions for changes and calls corresponding
+            listeners. Steps: 1) Model change or event triggers $apply &rarr; 2) $digest runs &rarr; 3) Iterate watchers
+            until stabilization (dirty-check loop) &rarr; 4) Update view. Diagram: $scope change &rarr; $apply() &rarr;
+            $digest() &rarr; watch functions &rarr; listener functions &rarr; DOM update.</p>
+    </div>
+
+    <div class="q">
+        <h3>9. Build a small AngularJS SPA with routing (outline)</h3>
+        <pre>// include ngRoute, configure routes
+angular.module('app',['ngRoute'])
+.config(function($routeProvider){
+  $routeProvider
+   .when('/home',{templateUrl:'home.html',controller:'HomeCtrl'})
+   .when('/list',{templateUrl:'list.html',controller:'ListCtrl'})
+   .otherwise({redirectTo:'/home'});
+});</pre>
+        <p>Explain: ng-view placeholder, controllers per route, partials as views.</p>
+    </div>
+
+    <div class="q">
+        <h3>10. Differences between jQuery and AngularJS re architecture and data binding</h3>
+        <p><strong>Answer:</strong> jQuery manipulates DOM directly; AngularJS provides MVC/MVVM structure with
+            declarative templates and automatic binding. Use jQuery for small DOM tasks; AngularJS for full app
+            architecture and data-driven UIs.</p>
+    </div>
+
+    <h2>Additional Short Pools (5-, 15-, 25-Mark Questions)</h2>
+    <p>Below are concise answers/explanations for remaining question groups (representative picks for each listed item).
+    </p>
+
+    <div class="q">
+        <h3>5-Marks (selected items)</h3>
+        <ol>
+            <li>Steps to link jQuery via CDN: add &lt;script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"&gt;&lt;/script&gt; before other scripts that use it.
+            </li>
+            <li>$(document).ready() vs window.onload: ready runs when DOM is ready, window.onload waits for all
+                resources (images) to load.</li>
+            <li>Example to change background color of &lt;p&gt;: $('p').css('background-color','yellow');</li>
+        </ol>
+    </div>
+
+    <div class="q">
+        <h3>15-Marks (selected items)</h3>
+        <ol>
+            <li>Animate image enlarge on hover (jQuery): use .hover() with .animate({width: '+=20px', height: '+=20px'})
+                on mouseenter and reverse on mouseleave.</li>
+            <li>AngularJS two-way data binding: explained earlier with ng-model; add example with input and display
+                bound to same model.</li>
+        </ol>
+    </div>
+
+    <div class="q">
+        <h3>25-Marks (selected items)</h3>
+        <ol>
+            <li>jQuery app that changes list style and fade-out on click: bind click to list items, change .css() or
+                .addClass(), call .fadeOut() and remove element on complete.</li>
+            <li>AngularJS complete SPA with product list &amp; filter: use module, controller with products array,
+                ng-repeat, custom filter or category select bound with ng-model to filter list.</li>
+        </ol>
+    </div>
+
+    <h2>Node.js (brief answers for Unit III questions)</h2>
+    <div class="q">
+        <h3>Selected concise answers</h3>
+        <ol>
+            <li><strong>Define Node.js:</strong> Server-side JavaScript runtime built on V8 enabling event-driven,
+                non-blocking I/O.</li>
+            <li><strong>Event Loop:</strong> Handles callbacks and asynchronous operations; single-threaded loop that
+                processes callbacks from the event queue.</li>
+            <li><strong>Read and print text file example:</strong>
+                <pre>const fs = require('fs');
+fs.readFile('file.txt','utf8',(err,data)=>{ if(err) throw err; console.log(data); });</pre>
+            </li>
+            <li><strong>Create basic HTTP server:</strong>
+                <pre>const http=require('http');
+http.createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/html'});res.end('&lt;h1&gt;Hello&lt;/h1&gt;');}).listen(3000);</pre>
+            </li>
+        </ol>
+    </div>
+
+    <footer>
+        <p class="hint">End of concise answers. This HTML contains focused answers per the provided question bank;
+            expand any specific answer into full-length explanations or diagrams on request.</p>
+    </footer>
+</body>
+
+</html>
