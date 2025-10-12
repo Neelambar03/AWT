@@ -127,11 +127,17 @@
         "name": "Lab4",
         "url": "./lab/Unit2/exp4/"
     },
+    
+    {
+        "type": "lab",
+        "name": "Lab5_6",
+        "url": "./lab/Unit3/Experiment6/"
+    },
 
     {
         "type": "lab",
-        "name": "Blank",
-        "url": "./lab/Unit2/exp5/"
+        "name": "Lab7",
+        "url": "./lab/Unit3/exp7/"
     }
 
 ]
