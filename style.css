@@ -32,7 +32,6 @@
   transform: scale(1.05);
 }
 
-
 #weather {
   position: fixed;
   top: 20px;         /* 🔁 changed from bottom to top */
@@ -52,13 +51,11 @@
   animation: fadeOutOnly 3s ease-in-out 2s forwards;
 }
 
-
 #weather:hover {
   background-color: rgba(44, 44, 44, 0.95);
   color: #90caf9;
   transform: scale(1.05);
 }
-
 
 :root {
   --paper-width: 820px;
@@ -259,8 +256,6 @@ footer {
   }
 
 }
-
-
 
 li a:hover {
     text-decoration: underline;

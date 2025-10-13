@@ -1,0 +1,329 @@
+@keyframes fadeOutOnly {
+  0% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+/* --- Floating Info Boxes (datetime & weather) --- */
+#datetime, #weather {
+  position: fixed;
+  left: 20px;
+  font-size: 0.9rem;
+  color: #ccc;
+  font-style: italic;
+  background-color: rgba(30, 30, 30, 0.85);
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid #444;
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transition: all 0.4s ease;
+  animation: fadeOutOnly 3s ease-in-out 2s forwards;
+}
+
+#datetime { bottom: 20px; }
+#weather { top: 20px; }
+
+#datetime:hover, #weather:hover {
+  background-color: rgba(50, 50, 50, 0.95);
+  color: #a7d4ff;
+  transform: scale(1.04);
+}
+
+/* --- Root Variables --- */
+:root {
+  --paper-width: 820px;
+  --paper-pad: 2.4rem;
+  --ink: #1a1a1a;
+  --muted: #666;
+  --line: #ddd;
+  --accent: #0d47a1;
+  --bg: #f9f9fa;
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Base Styles --- */
+html, body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Georgia", "Palatino Linotype", "Times New Roman", serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.3s ease;
+}
+
+/* --- Paper Container --- */
+.paper {
+  max-width: var(--paper-width);
+  margin: 3rem auto;
+  background: #fff;
+  padding: var(--paper-pad);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.paper:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* --- Header Area --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.header .info {
+  text-align: left;
+}
+
+.header .date {
+  text-align: right;
+  color: var(--muted);
+}
+
+/* --- Title & Subtitle --- */
+.title {
+  text-align: center;
+  margin: 2rem 0 1rem;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  font-size: clamp(2rem, 2.4vw, 2.8rem);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  color: var(--ink);
+}
+
+.subtitle {
+  text-align: center;
+  margin: 0 0 2rem;
+  color: var(--muted);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+/* --- Abstract Section --- */
+.abstract {
+  background: #f5f5f5;
+  font-style: italic;
+  color: #555;
+  font-size: 0.96rem;
+  padding: 1rem 1.4rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+/* --- Section Headings with Numbers --- */
+main {
+  counter-reset: section;
+}
+
+section {
+  margin: 2rem 0;
+}
+
+section > h2 {
+  counter-increment: section;
+  font-variant-caps: small-caps;
+  letter-spacing: .4px;
+  font-size: 1.3rem;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  color: var(--accent);
+}
+
+section > h2::before {
+  content: counter(section) ".";
+  font-weight: bold;
+}
+
+/* --- Section Divider --- */
+.section-rule {
+  height: 1px;
+  background: var(--line);
+  border: none;
+  margin: 1rem 0;
+}
+
+/* --- Lists --- */
+ul {
+  padding-left: 1.4rem;
+  margin-top: 0.4rem;
+}
+
+li {
+  margin: 0.5rem 0;
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
+}
+
+li:hover {
+  background-color: #fcfcfc;
+  border-radius: 4px;
+  padding-left: 8px;
+  cursor: pointer;
+}
+
+li a {
+  transition: color 0.2s ease;
+}
+
+li a:hover {
+  color: gray;
+  text-decoration: underline;
+}
+
+.note {
+  list-style: none;
+  margin-left: -1.2rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.desc {
+  color: var(--muted);
+  margin: 0.2rem 0 0 0.3rem;
+  font-size: 0.93rem;
+  display: block;
+}
+
+/* --- Links --- */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(13, 71, 161, 0.3);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+a:hover {
+  color: #0b3c7d;
+  border-bottom-color: rgba(13, 71, 161, 0.6);
+}
+
+a:focus {
+  outline: 3px solid rgba(13, 71, 161, 0.2);
+  outline-offset: 2px;
+  border-bottom-color: transparent;
+}
+
+/* --- Footer --- */
+footer {
+  margin-top: 3rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  text-align: right;
+}
+
+/* --- References --- */
+.references {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.2rem;
+}
+
+.references li {
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+
+/* --- Figures & Captions --- */
+.figure, .table {
+  font-size: 0.92rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  padding: 6px;
+  background: #fafafa;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.caption {
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* --- Blockquote --- */
+blockquote {
+  border-left: 4px solid var(--line);
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  font-style: italic;
+  color: var(--muted);
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+/* --- Print Styles --- */
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .paper {
+    box-shadow: none;
+    border: 1px solid #000;
+    margin: 0;
+    padding: 1.5rem;
+    max-width: 720px;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+    border: none;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    color: #666;
+    font-size: 0.9em;
+  }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 640px) {
+  .paper {
+    margin: 1rem auto;
+    padding: 1.4rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  footer {
+    text-align: center;
+  }
+}
