@@ -17,8 +17,8 @@
   border: 1px solid #444;
   backdrop-filter: blur(4px);
   z-index: 1000;
-  transition: all 0.4s ease;
   animation: fadeOutOnly 3s ease-in-out 2s forwards;
+  transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out, transform 0.3s ease;
 }
 
 #datetime { bottom: 20px; }
@@ -56,7 +56,7 @@ body {
   line-height: 1.85;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background 0.3s ease;
+  transition: background 0.4s ease-in-out, color 0.3s ease-in-out;
 }
 
 /* --- Paper Container --- */
@@ -68,7 +68,7 @@ body {
   box-shadow: var(--shadow-soft);
   border: 1px solid #ccc;
   border-radius: 12px;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .paper:hover {
@@ -129,6 +129,7 @@ body {
   border-left: 4px solid var(--accent);
   border-radius: 8px;
   margin: 2rem 0;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 /* --- Section Headings with Numbers --- */
@@ -152,6 +153,7 @@ section > h2 {
   color: var(--accent);
 }
 
+/* Section Numbering */
 section > h2::before {
   content: counter(section) ".";
   font-weight: bold;
@@ -173,7 +175,7 @@ ul {
 
 li {
   margin: 0.5rem 0;
-  transition: background-color 0.2s ease, padding-left 0.2s ease;
+  transition: background-color 0.3s ease-in-out, padding-left 0.3s ease-in-out;
 }
 
 li:hover {
@@ -184,7 +186,7 @@ li:hover {
 }
 
 li a {
-  transition: color 0.2s ease;
+  transition: color 0.3s ease-in-out;
 }
 
 li a:hover {
@@ -211,7 +213,7 @@ a {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px dotted rgba(13, 71, 161, 0.3);
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 a:hover {
@@ -282,6 +284,7 @@ blockquote {
   color: var(--muted);
   background: #fafafa;
   border-radius: 6px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 /* --- Print Styles --- */
