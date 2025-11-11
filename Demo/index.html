@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My To Do App</title>
+
+  <!-- jQuery Library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* basic body setup */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* main box for the app */
+    .todo-box {
+      background: #fff;
+      width: 340px;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0 0 20px;
+      color: #333;
+    }
+
+    /* input area */
+    .input-area {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 75%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    /* task list styles */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    li {
+      background: #f2f2f2;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .delete-btn {
+      background: #ff4d4d;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #e60000;
+    }
+
+    /* small scroll bar look */
+    ul::-webkit-scrollbar {
+      width: 6px;
+    }
+    ul::-webkit-scrollbar-thumb {
+      background: #bbb;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="todo-box">
+    <h2>📋 My To-Do List</h2>
+
+    <div class="input-area">
+      <input type="text" id="taskInput" placeholder="Write something...">
+      <button id="addBtn">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    // wait for page to be ready
+    $(document).ready(function() {
+
+      // get tasks from local storage or empty list
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      // show tasks on screen
+      function showTasks() {
+        $("#taskList").empty(); // clear old list
+        for (let i = 0; i < tasks.length; i++) {
+          $("#taskList").append(
+            "<li>" + tasks[i] + 
+            " <button class='delete-btn' data-id='" + i + "'>Delete</button></li>"
+          );
+        }
+      }
+
+      // add new task
+      $("#addBtn").click(function() {
+        let text = $("#taskInput").val().trim();
+        if (text == "") {
+          alert("Please enter a task!");
+        } else {
+          tasks.push(text);
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+          $("#taskInput").val(""); // clear input
+          showTasks();
+        }
+      });
+
+      // delete task
+      $(document).on("click", ".delete-btn", function() {
+        let index = $(this).data("id");
+        tasks.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        showTasks();
+      });
+
+      // load tasks when page opens
+      showTasks();
+    });
+  </script>
+
+</body>
+</html>
