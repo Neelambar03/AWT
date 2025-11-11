@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8"> <!-- Set character encoding -->
-  <title>📝 Friendly Multi-User To-Do App</title> <!-- Page title -->
+  <title>Friendly Multi-User To-Do App</title> <!-- Page title -->
   <link rel="stylesheet" href="style.css"> <!-- Link to CSS -->
 
   <!-- Load AngularJS (for app logic) and jQuery (for optional helpers) -->
@@ -172,9 +172,9 @@
         if (!$scope.users.includes(user)) { // Add new user if not exists
           $scope.users.push(user);
           saveUsers(); // Save users
-          alert(`🎉 New user created: ${user}`);
+          alert(`New user created: ${user}`);
         } else {
-          alert(`👋 Welcome back, ${user}!`);
+          alert(`Welcome back, ${user}!`);
         }
 
         setCookie("userName", user, 7); // Save login in cookie
@@ -196,7 +196,7 @@
 
         $scope.users[index] = newName; // Update user list
         saveUsers(); // Save changes
-        alert("✅ User renamed successfully.");
+        alert("User renamed successfully.");
       };
 
       // Remove a user and all their tasks
@@ -265,10 +265,10 @@
       const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`; // Full time string
 
       let greeting = "";
-      if (now.getHours() < 12) greeting = "🌞 Good Morning!";
-      else if (now.getHours() < 18) greeting = "🌤️ Good Afternoon!";
-      else if (now.getHours() < 21) greeting = "🌆 Good Evening!";
-      else greeting = "🌙 Good Night!";
+      if (now.getHours() < 12) greeting = "Good Morning!";
+      else if (now.getHours() < 18) greeting = "Good Afternoon!";
+      else if (now.getHours() < 21) greeting = "Good Evening!";
+      else greeting = "Good Night!";
 
       document.getElementById("datetime").innerHTML = `
     ${dateStr} | ${timeStr}<br><span>${greeting}</span>
