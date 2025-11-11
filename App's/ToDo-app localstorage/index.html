@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
+
+<head>
+  <meta charset="UTF-8"> <!-- Set character encoding -->
+  <title>📝 Friendly Multi-User To-Do App</title> <!-- Page title -->
+  <link rel="stylesheet" href="style.css"> <!-- Link to CSS -->
+
+  <!-- Load AngularJS (for app logic) and jQuery (for optional helpers) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+
+  <!-- Load Font Awesome (for icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <div id="datetime"></div>
+
+  </div>
+
+</head>
+
+<body ng-controller="MainController">
+  <!-- ============================= -->
+  <!-- ===== LOGIN SCREEN ======== -->
+  <!-- ============================= -->
+  <div class="container" ng-show="!currentUser"> <!-- Show login if no user -->
+    <h2><i class="fa-solid fa-user"></i> Welcome!</h2>
+    <p>Please select an existing user or create a new one:</p>
+
+    <!-- Dropdown for existing users -->
+    <select ng-model="selectedUser" ng-options="user for user in users">
+      <option value="">-- Choose a user --</option>
+    </select><br>
+
+    <!-- Input for new user name -->
+    <input type="text" ng-model="newUser" placeholder="New user name"><br>
+
+    <!-- Login button -->
+    <button class="add" ng-click="login()">
+      <i class="fa-solid fa-right-to-bracket"></i> Login
+    </button>
+
+    <hr>
+
+    <!-- User management section -->
+    <h3><i class="fa-solid fa-users"></i> Manage Users</h3>
+
+    <!-- Display all existing users -->
+    <ul>
+      <li ng-repeat="u in users track by $index"> <!-- Loop through users -->
+        {{ u }} <!-- Show user name -->
+        <span>
+          <!-- Rename a user -->
+          <button class="edit" ng-click="renameUser($index)" title="Rename">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+
+          <!-- Delete a user -->
+          <button class="delete" ng-click="removeUser($index)" title="Delete">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </span>
+      </li>
+
+      <!-- Message when no users exist -->
+      <li ng-if="users.length === 0" class="no-items">No users yet</li>
+    </ul>
+  </div>
+
+  <!-- ============================= -->
+  <!-- ===== MAIN TO-DO APP ======= -->
+  <!-- ============================= -->
+  <div class="container" ng-show="currentUser"> <!-- Show tasks if user logged in -->
+    <h2><i class="fa-solid fa-tasks"></i> Hello, {{ currentUser }}!</h2>
+
+    <!-- Input for new task -->
+    <input type="text" ng-model="newTask" placeholder="What do you need to do?">
+    <button class="add" ng-click="addTask()">
+      <i class="fa-solid fa-plus"></i> Add Task
+    </button>
+
+    <!-- Task list -->
+    <ul>
+      <li ng-repeat="task in tasks track by $index"> <!-- Loop through tasks -->
+        <div class="task-info">
+          <strong>{{ task.text }}</strong> <!-- Show task text -->
+          <!-- Show when the task was added -->
+          <div class="time">
+            <i class="fa-regular fa-clock"></i> {{ task.time }} <!-- Show timestamp -->
+          </div>
+        </div>
+
+        <!-- Edit and Delete buttons for each task -->
+        <span>
+          <button class="edit" ng-click="editTask($index)" title="Edit Task">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="delete" ng-click="deleteTask($index)" title="Delete Task">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </span>
+      </li>
+
+      <!-- If no tasks exist -->
+      <li ng-if="tasks.length === 0" class="no-items">
+        No tasks yet — add your first one!
+      </li>
+    </ul>
+
+    <!-- Logout / Switch user button -->
+    <button class="logout" ng-click="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Switch User
+    </button>
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- ===== ANGULAR LOGIC ======== -->
+  <!-- ============================= -->
+  <script>
+    // Create the Angular app
+    const app = angular.module("todoApp", []);
+
+    // Main controller that holds all the app logic
+    app.controller("MainController", function ($scope) {
+
+      /* ===== INITIAL SETUP ===== */
+      $scope.users = JSON.parse(localStorage.getItem("users") || "[]"); // Load users from localStorage
+      $scope.currentUser = getCookie("userName"); // Check cookie for logged in user
+      $scope.tasks = []; // Initialize empty task list
+
+      if ($scope.currentUser) loadTasks(); // Load tasks if user exists
+
+      /* ===== HELPER FUNCTIONS ===== */
+
+      // Load tasks for the current user
+      function loadTasks() {
+        $scope.tasks = JSON.parse(localStorage.getItem("tasks_" + $scope.currentUser) || "[]");
+      }
+
+      // Save the user list to localStorage
+      function saveUsers() {
+        localStorage.setItem("users", JSON.stringify($scope.users));
+      }
+
+      // Save the current user's tasks to localStorage
+      function saveTasks() {
+        localStorage.setItem("tasks_" + $scope.currentUser, JSON.stringify($scope.tasks));
+      }
+
+      // Helper: set a browser cookie
+      function setCookie(name, value, days) {
+        const d = new Date(); // Create date object
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000)); // Add days to current time
+        document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`; // Set cookie
+      }
+
+      // Helper: read a browser cookie
+      function getCookie(name) {
+        const match = document.cookie.split("; ").find(row => row.startsWith(name + "=")); // Find cookie
+        return match ? match.split("=")[1] : ""; // Return value or empty string
+      }
+
+      /* ===== USER MANAGEMENT ===== */
+
+      // Handle user login or creation
+      $scope.login = function () {
+        const user = $scope.selectedUser || $scope.newUser; // Get selected or new user
+
+        if (!user) return alert("Please enter or select a user name."); // Validate input
+
+        if (!$scope.users.includes(user)) { // Add new user if not exists
+          $scope.users.push(user);
+          saveUsers(); // Save users
+          alert(`🎉 New user created: ${user}`);
+        } else {
+          alert(`👋 Welcome back, ${user}!`);
+        }
+
+        setCookie("userName", user, 7); // Save login in cookie
+        $scope.currentUser = user; // Update current user
+        loadTasks(); // Load tasks for this user
+        $scope.newUser = ""; // Clear input
+        $scope.selectedUser = ""; // Clear selection
+      };
+
+      // Rename an existing user
+      $scope.renameUser = function (index) {
+        const currentName = $scope.users[index]; // Current name
+        const newName = prompt("Enter a new name:", currentName); // Ask for new name
+        if (!newName || !newName.trim()) return; // Cancel if invalid
+
+        const oldTasks = localStorage.getItem("tasks_" + currentName); // Get old tasks
+        localStorage.setItem("tasks_" + newName, oldTasks); // Save under new name
+        localStorage.removeItem("tasks_" + currentName); // Remove old tasks
+
+        $scope.users[index] = newName; // Update user list
+        saveUsers(); // Save changes
+        alert("✅ User renamed successfully.");
+      };
+
+      // Remove a user and all their tasks
+      $scope.removeUser = function (index) {
+        const user = $scope.users[index];
+        if (!confirm(`Are you sure you want to delete ${user}?`)) return; // Confirm deletion
+
+        localStorage.removeItem("tasks_" + user); // Delete tasks
+        $scope.users.splice(index, 1); // Remove from list
+        saveUsers(); // Save changes
+      };
+
+      /* ===== TASK MANAGEMENT ===== */
+
+      // Add a new task for the current user
+      $scope.addTask = function () {
+        const text = $scope.newTask?.trim(); // Get input
+        if (!text) return alert("Please type a task first."); // Validate
+
+        const now = new Date(); // Get current time
+        const formattedTime = now.toLocaleString(); // Format timestamp
+
+        $scope.tasks.push({ text, time: formattedTime }); // Add task object
+        saveTasks(); // Save tasks
+        $scope.newTask = ""; // Clear input
+      };
+
+      // Edit an existing task
+      $scope.editTask = function (index) {
+        const current = $scope.tasks[index]; // Get current task
+        const updated = prompt("Edit your task:", current.text); // Prompt new text
+        if (updated && updated.trim()) {
+          current.text = updated.trim(); // Update task
+          saveTasks(); // Save changes
+        }
+      };
+
+      // Delete a task
+      $scope.deleteTask = function (index) {
+        if (confirm("Delete this task?")) {
+          $scope.tasks.splice(index, 1); // Remove task
+          saveTasks(); // Save changes
+        }
+      };
+
+      // Logout (clear cookie and reset state)
+      $scope.logout = function () {
+        setCookie("userName", "", -1); // Remove cookie
+        $scope.currentUser = null; // Clear user
+        $scope.tasks = []; // Clear tasks
+      };
+    });
+
+
+    // Time and Greeting Update
+    function updateDateTime() {
+      const now = new Date(); // Current date/time
+      const dateStr = now.toDateString(); // Format date
+
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0'); // Format minutes
+      const seconds = now.getSeconds().toString().padStart(2, '0'); // Format seconds
+      const ampm = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
+      hours = hours % 12 || 12; // Convert to 12-hour format
+
+      const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`; // Full time string
+
+      let greeting = "";
+      if (now.getHours() < 12) greeting = "🌞 Good Morning!";
+      else if (now.getHours() < 18) greeting = "🌤️ Good Afternoon!";
+      else if (now.getHours() < 21) greeting = "🌆 Good Evening!";
+      else greeting = "🌙 Good Night!";
+
+      document.getElementById("datetime").innerHTML = `
+    ${dateStr} | ${timeStr}<br><span>${greeting}</span>
+  `; // Update datetime div
+    }
+
+    setInterval(updateDateTime, 1000); // Update every second
+    updateDateTime(); // Initial call
+  </script>
+  <!-- Load AngularJS (for app logic) and jQuery (for optional helpers) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</body>
+
+</html>
