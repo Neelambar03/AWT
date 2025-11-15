@@ -1,202 +1,276 @@
-// server.js
-const express = require('express');
-const mongoose = require('mongoose');
+// ================================
+//  server.js (Single File App)
+// ================================
 
+const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 
-// ============================================
-// STEP 1: MIDDLEWARE
-// ============================================
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ============================================
-// STEP 2: CONNECT TO MONGODB
-// ============================================
+// ================================
+// DATABASE
+// ================================
+mongoose.connect("mongodb://localhost:27017/todoApp")
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch(err => console.error("❌ DB Error:", err));
 
-const DB_URL = 'mongodb://localhost:27017/todoDB';
+// ================================
+// SCHEMAS
+// ================================
+const User = mongoose.model("User", new mongoose.Schema({
+  name: String
+}));
 
-mongoose.connect(DB_URL)
-  .then(() => console.log('✅ Connected to MongoDB successfully'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+const Task = mongoose.model("Task", new mongoose.Schema({
+  user: String,
+  text: String,
+  createdAt: { type: Date, default: Date.now }
+}));
 
-// ============================================
-// STEP 3: DEFINE TASK SCHEMA
-// ============================================
+// ================================
+// SERVE MERGED FRONTEND
+// ================================
+app.get("/", (req, res) => {
 
-const taskSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    default: ''
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'completed'],
-    default: 'pending'
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+res.send(`
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
 
-// ============================================
-// STEP 4: CREATE MODEL
-// ============================================
+<head>
+  <meta charset="UTF-8">
+  <title>Merged To-Do App</title>
 
-const Task = mongoose.model('Task', taskSchema);
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-// ============================================
-// STEP 5: ROUTES
-// ============================================
+  <style>
+    body { font-family: Arial; margin: 20px; background: #f7f7f7; }
+    .container { background: white; padding: 20px; border-radius: 8px; margin: 20px auto; width: 500px; }
+    input, select { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 8px 12px; margin: 5px; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { background: #fafafa; padding: 10px; border: 1px solid #ddd; margin: 10px 0; display: flex; justify-content: space-between; }
+    #datetime { font-size: 18px; margin: 20px; text-align: center; }
+  </style>
 
-// HOME PAGE
-app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>To-Do App</title>
-      <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
-        .container { background: #f4f4f4; padding: 20px; margin: 20px 0; border-radius: 8px; }
-        h1, h2 { color: #333; }
-        input, textarea { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
-        button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #218838; }
-        .error { color: red; }
-        .success { color: green; }
-        a { text-decoration: none; color: #007bff; }
-        a:hover { text-decoration: underline; }
-      </style>
-    </head>
-    <body>
-      <h1>📝 To-Do Application</h1>
+</head>
 
-      <div class="container">
-        <h2>Add a New Task</h2>
-        <form action="/add-task" method="POST">
-          <input type="text" name="title" placeholder="Task title" required>
-          <textarea name="description" placeholder="Task description"></textarea>
-          <button type="submit">Add Task</button>
-        </form>
+<body ng-controller="MainController">
+
+<div id="datetime"></div>
+
+<!-- LOGIN SCREEN -->
+<div class="container" ng-show="!currentUser">
+  <h2>Welcome</h2>
+
+  <select ng-model="selectedUser" ng-options="u for u in users">
+    <option value="">-- Choose user --</option>
+  </select>
+
+  <input ng-model="newUser" placeholder="New user name">
+
+  <button ng-click="login()">Login</button>
+
+  <hr>
+
+  <h3>Manage Users</h3>
+  <ul>
+    <li ng-repeat="u in users">
+      {{ u }}
+      <span>
+        <button ng-click="renameUser(u)">Rename</button>
+        <button ng-click="deleteUser(u)">Delete</button>
+      </span>
+    </li>
+  </ul>
+</div>
+
+<!-- MAIN APP -->
+<div class="container" ng-show="currentUser">
+  <h2>Hello {{ currentUser }}</h2>
+
+  <input ng-model="newTask" placeholder="New task...">
+  <button ng-click="addTask()">Add</button>
+
+  <ul>
+    <li ng-repeat="t in tasks">
+      <div>
+        <strong>{{ t.text }}</strong><br>
+        <small>{{ t.createdAt | date:'medium' }}</small>
       </div>
+      <span>
+        <button ng-click="editTask(t)">Edit</button>
+        <button ng-click="removeTask(t)">Delete</button>
+      </span>
+    </li>
+  </ul>
 
-      <div class="container">
-        <h2>View All Tasks</h2>
-        <form action="/tasks" method="GET">
-          <button type="submit">Show All Tasks</button>
-        </form>
-      </div>
-    </body>
-    </html>
-  `);
-});
+  <button ng-click="logout()">Logout</button>
+</div>
 
-// ADD TASK
-app.post('/add-task', async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const newTask = new Task({ title, description });
-    await newTask.save();
 
-    res.send(`
-      <h2 class="success">✅ Task added successfully!</h2>
-      <p><strong>Title:</strong> ${title}</p>
-      <p><strong>Description:</strong> ${description}</p>
-      <a href="/">Go back to home</a>
-    `);
-  } catch (error) {
-    res.send(`
-      <h2 class="error">❌ Error: ${error.message}</h2>
-      <a href="/">Go back</a>
-    `);
+<script>
+// ======================
+// ANGULAR FRONTEND LOGIC
+// ======================
+const app = angular.module("todoApp", []);
+
+app.controller("MainController", function ($scope, $http) {
+
+  $scope.users = [];
+  $scope.tasks = [];
+  $scope.currentUser = null;
+
+  function loadUsers() {
+    $http.get("/api/users").then(res => $scope.users = res.data);
   }
-});
 
-// VIEW ALL TASKS
-app.get('/tasks', async (req, res) => {
-  try {
-    const tasks = await Task.find();
+  function loadTasks() {
+    if (!$scope.currentUser) return;
+    $http.get("/api/tasks/" + $scope.currentUser).then(res => $scope.tasks = res.data);
+  }
 
-    if (tasks.length === 0) {
-      return res.send(`
-        <h2>No tasks found.</h2>
-        <a href="/">Go back to home</a>
-      `);
-    }
+  loadUsers();
 
-    let taskList = `
-      <h2>📋 All Tasks</h2>
-      <ul>
-    `;
+  // LOGIN
+  $scope.login = function () {
+    const name = $scope.selectedUser || $scope.newUser;
+    if (!name) return alert("Enter username");
 
-    tasks.forEach(task => {
-      taskList += `
-        <li>
-          <strong>${task.title}</strong> - ${task.status.toUpperCase()} <br>
-          ${task.description ? `<em>${task.description}</em><br>` : ''}
-          Created on: ${task.createdAt.toDateString()} <br>
-          <form action="/update-task/${task._id}" method="POST" style="display:inline;">
-            <input type="hidden" name="status" value="${task.status === 'pending' ? 'completed' : 'pending'}">
-            <button type="submit">${task.status === 'pending' ? 'Mark Completed' : 'Mark Pending'}</button>
-          </form>
-          <form action="/delete-task/${task._id}" method="POST" style="display:inline;">
-            <button type="submit" style="background:#dc3545;">Delete</button>
-          </form>
-        </li>
-        <hr>
-      `;
+    $http.post("/api/users", { name }).then(() => {
+      $scope.currentUser = name;
+      loadTasks();
+      loadUsers();
     });
 
-    taskList += '</ul><a href="/">Go back to home</a>';
-    res.send(taskList);
+    $scope.newUser = "";
+  };
 
-  } catch (error) {
-    res.send(`
-      <h2 class="error">❌ Error: ${error.message}</h2>
-      <a href="/">Go back</a>
-    `);
-  }
+  // LOGOUT
+  $scope.logout = function () {
+    $scope.currentUser = null;
+    $scope.tasks = [];
+  };
+
+  // ADD TASK
+  $scope.addTask = function () {
+    if (!$scope.newTask) return;
+
+    $http.post("/api/tasks", {
+      user: $scope.currentUser,
+      text: $scope.newTask
+    }).then(loadTasks);
+
+    $scope.newTask = "";
+  };
+
+  // EDIT TASK
+  $scope.editTask = function (task) {
+    const updated = prompt("Edit text:", task.text);
+    if (!updated) return;
+
+    $http.post("/api/tasks/edit", { id: task._id, text: updated })
+      .then(loadTasks);
+  };
+
+  // DELETE TASK
+  $scope.removeTask = function (task) {
+    $http.post("/api/tasks/delete", { id: task._id })
+      .then(loadTasks);
+  };
+
+  // RENAME USER
+  $scope.renameUser = function (oldName) {
+    const newName = prompt("New name:", oldName);
+    if (!newName) return;
+
+    $http.post("/api/users/rename", { oldName, newName }).then(() => {
+      if ($scope.currentUser === oldName) $scope.currentUser = newName;
+      loadUsers();
+      loadTasks();
+    });
+  };
+
+  // DELETE USER
+  $scope.deleteUser = function (name) {
+    if (!confirm("Delete user?")) return;
+
+    $http.post("/api/users/delete", { name }).then(() => {
+      if ($scope.currentUser === name) $scope.logout();
+      loadUsers();
+    });
+  };
 });
 
-// UPDATE TASK STATUS
-app.post('/update-task/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-    await Task.findByIdAndUpdate(id, { status });
-    res.redirect('/tasks');
-  } catch (error) {
-    res.send(`
-      <h2 class="error">❌ Error updating task: ${error.message}</h2>
-      <a href="/">Go back</a>
-    `);
-  }
+// LIVE CLOCK
+function updateDateTime() {
+  const now = new Date();
+  const str = now.toLocaleString();
+  document.getElementById("datetime").innerHTML = str;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+</script>
+
+</body>
+</html>
+`);
 });
 
-// DELETE TASK
-app.post('/delete-task/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Task.findByIdAndDelete(id);
-    res.redirect('/tasks');
-  } catch (error) {
-    res.send(`
-      <h2 class="error">❌ Error deleting task: ${error.message}</h2>
-      <a href="/">Go back</a>
-    `);
-  }
+// ================================
+// BACKEND API ROUTES
+// ================================
+app.get("/api/users", async (req, res) => {
+  const users = await User.find().lean();
+  res.json(users.map(u => u.name));
 });
 
-// ============================================
+app.post("/api/users", async (req, res) => {
+  const { name } = req.body;
+  if (!await User.findOne({ name })) await User.create({ name });
+  res.sendStatus(200);
+});
+
+app.post("/api/users/rename", async (req, res) => {
+  const { oldName, newName } = req.body;
+  await User.updateOne({ name: oldName }, { name: newName });
+  await Task.updateMany({ user: oldName }, { user: newName });
+  res.sendStatus(200);
+});
+
+app.post("/api/users/delete", async (req, res) => {
+  const { name } = req.body;
+  await User.deleteOne({ name });
+  await Task.deleteMany({ user: name });
+  res.sendStatus(200);
+});
+
+app.get("/api/tasks/:user", async (req, res) => {
+  res.json(await Task.find({ user: req.params.user }).lean());
+});
+
+app.post("/api/tasks", async (req, res) => {
+  await Task.create(req.body);
+  res.sendStatus(200);
+});
+
+app.post("/api/tasks/edit", async (req, res) => {
+  await Task.findByIdAndUpdate(req.body.id, { text: req.body.text });
+  res.sendStatus(200);
+});
+
+app.post("/api/tasks/delete", async (req, res) => {
+  await Task.findByIdAndDelete(req.body.id);
+  res.sendStatus(200);
+});
+
+// ================================
 // START SERVER
-// ============================================
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+// ================================
+app.listen(3000, () =>
+  console.log("🚀 App running at http://localhost:3000")
+);
