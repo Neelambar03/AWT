@@ -4,17 +4,18 @@
   100% { opacity: 0.3; }
 }
 
-/* --- Floating Info Boxes (datetime & weather) --- */
-#datetime, #weather {
+/* --- Floating Info Boxes --- */
+#datetime {
   position: fixed;
+  top: 20px;
   right: 20px;
   font-size: 0.9rem;
   color: #ccc;
   font-style: italic;
-  background-color: rgba(30, 30, 30, 0.85);
+  background-color: rgba(30,30,30,0.85);
   padding: 12px 16px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   border: 1px solid #444;
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -22,11 +23,8 @@
   transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out, transform 0.3s ease;
 }
 
-#datetime { top: 20px; }
-
-
-#datetime:hover{
-  background-color: rgba(50, 50, 50, 0.95);
+#datetime:hover {
+  background-color: rgba(50,50,50,0.95);
   color: #a7d4ff;
   transform: scale(1.04);
 }
@@ -40,7 +38,7 @@
   --line: #ddd;
   --accent: #0d47a1;
   --bg: #f9f9fa;
-  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.05);
+  --shadow-soft: 0 12px 32px rgba(0,0,0,0.05);
   --btn-radius: 6px;
 }
 
@@ -73,7 +71,7 @@ body {
 }
 
 .container:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
   transform: translateY(-2px);
 }
 
