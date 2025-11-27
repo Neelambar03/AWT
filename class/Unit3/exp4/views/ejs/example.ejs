@@ -1,0 +1,8 @@
+cat > views/ejs/example.ejs <<'EOT'
+<h1>EJS Hello <%= name %></h1>
+<ul>
+  <% users.forEach(u => { %>
+    <li><%= u %></li>
+  <% }) %>
+</ul>
+EOT
