@@ -1,0 +1,49 @@
+<!-- Given the following HTML and D3.js code:
+
+An array vardata = [10, 30, 30, , 70] is used to create a list of numbers in a <ul> element.
+
+An array post = ["post1", "post2", "post3", "post4"] is used to create paragraphs inside a <section> element. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D3 Simple List Example</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<h2>Numbers List</h2>
+<ul id="numbers"></ul>
+
+<h2>Posts</h2>
+<section id="posts"></section>
+
+<script>
+    // 1) vardata
+    var vardata = [10, 30, 30, , 70];
+
+    // Remove empty/undefined elements
+    vardata = vardata.filter(d => d !== undefined);
+
+    // Add list items
+    d3.select("#numbers")
+      .selectAll("li")
+      .data(vardata)
+      .enter()
+      .append("li")
+      .text(d => d);
+
+    // 2) post array
+    var post = ["post1", "post2", "post3", "post4"];
+
+    // Add paragraphs
+    d3.select("#posts")
+      .selectAll("p")
+      .data(post)
+      .enter()
+      .append("p")
+      .text(d => d);
+</script>
+
+</body>
+</html>

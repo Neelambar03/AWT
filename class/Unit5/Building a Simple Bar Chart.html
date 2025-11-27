@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>D3.js Simple Bar Chart</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  svg { border: 1px solid #ccc; }
+  .bar:hover { fill: orange; }
+</style>
+</head>
+<body>
+
+<h2>Simple D3.js Bar Chart</h2>
+<svg id="chart"></svg>
+
+<script>
+// ===== 1. Dataset =====
+const dataset = [30, 86, 150, 80, 200, 60, 120];
+
+// ===== 2. Chart Dimensions =====
+const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+const width = 600 - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
+
+// ===== 3. Create SVG =====
+const svg = d3.select("#chart")
+    .attr("viewBox", `0 0 600 400`);
+
+const g = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// ===== 4. Scales =====
+const xScale = d3.scaleBand()
+    .domain(d3.range(dataset.length))
+    .range([0, width])
+    .padding(0.1);
+
+const yScale = d3.scaleLinear()
+    .domain([0, d3.max(dataset)])
+    .range([height, 0]);
+
+// ===== 5. Draw Bars (Enter Selection) =====
+g.selectAll("rect")
+  .data(dataset)
+  .enter()
+  .append("rect")
+  .attr("class", "bar")
+  .attr("x", (d, i) => xScale(i))
+  .attr("y", d => yScale(d))
+  .attr("width", xScale.bandwidth())
+  .attr("height", d => height - yScale(d))
+  .attr("fill", "steelblue");
+
+// ===== 6. Draw Axes =====
+g.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(xScale).tickFormat(i => i + 1));
+
+g.append("g")
+  .call(d3.axisLeft(yScale));
+
+// ===== 7. Optional: Dynamic Update Example =====
+setTimeout(() => {
+  const newData = [50, 120, 180, 40, 220, 90, 140];
+
+  // DATA JOIN
+  const bars = g.selectAll("rect")
+                .data(newData);
+
+  // ENTER (new elements)
+  bars.enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", (d,i) => xScale(i))
+      .attr("y", d => yScale(0))
+      .attr("width", xScale.bandwidth())
+      .attr("height", 0)
+      .attr("fill", "orange")
+    .merge(bars) // ENTER + UPDATE
+      .transition()
+      .duration(1000)
+      .attr("x", (d,i) => xScale(i))
+      .attr("y", d => yScale(d))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => height - yScale(d));
+
+  // EXIT (remove old bars if dataset shrinks)
+  bars.exit().remove();
+
+  // Update y-axis
+  yScale.domain([0, d3.max(newData)]);
+  g.select("g").call(d3.axisLeft(yScale));
+
+}, 2000);
+
+</script>
+
+</body>
+</html>

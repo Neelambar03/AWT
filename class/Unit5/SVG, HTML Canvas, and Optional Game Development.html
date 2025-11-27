@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Canvas & SVG Demo</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  canvas, svg { border:1px solid #000; margin-bottom: 20px; display: block; }
+  button { margin: 5px 0; padding: 6px 12px; }
+  #colorBox { width: 300px; height: 100px; margin-top: 10px; border:1px solid #000; }
+</style>
+</head>
+<body>
+
+<h2>1. Canvas Ping-Pong Game</h2>
+<canvas id="pongCanvas" width="400" height="300"></canvas>
+
+<h2>2. SVG Coin Collection Game</h2>
+<svg id="coinGame" width="420" height="200">
+  <rect width="420" height="200" fill="#f9f9f9"/>
+  <circle id="player" cx="60" cy="90" r="15" fill="steelblue"/>
+  <circle class="coin" cx="200" cy="50" r="10" fill="gold"/>
+  <circle class="coin" cx="320" cy="120" r="10" fill="gold"/>
+  <text x="30" y="190">Use ↑↓←→ to move player</text>
+</svg>
+
+<h2>3. Canvas to PNG Export</h2>
+<canvas id="exportCanvas" width="200" height="150"></canvas>
+<button id="saveBtn">Download PNG</button>
+
+<h2>4. HSL / HSLA Color Demo</h2>
+<label>Hue: <input type="range" id="hue" min="0" max="360" value="200"></label>
+<label>Saturation: <input type="range" id="sat" min="0" max="100" value="70"></label>
+<label>Lightness: <input type="range" id="light" min="0" max="100" value="50"></label>
+<label>Alpha: <input type="range" id="alpha" min="0" max="1" step="0.01" value="1"></label>
+<div id="colorBox"></div>
+
+<script>
+// ========================
+// 1. Canvas Ping-Pong Game
+// ========================
+const pongCanvas = document.getElementById("pongCanvas");
+const ctxP = pongCanvas.getContext("2d");
+
+// Paddle
+const paddle = { x:150, y:280, width:100, height:12, speed:7 };
+// Ball
+const ball = { x:200, y:150, radius:8, dx:4, dy:-4 };
+
+function drawPaddle(){
+  ctxP.fillStyle="lightblue";
+  ctxP.fillRect(paddle.x,paddle.y,paddle.width,paddle.height);
+}
+
+function drawBall(){
+  ctxP.beginPath();
+  ctxP.arc(ball.x,ball.y,ball.radius,0,Math.PI*2);
+  ctxP.fillStyle="orange"; ctxP.fill();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==="ArrowLeft") paddle.x-=paddle.speed;
+  if(e.key==="ArrowRight") paddle.x+=paddle.speed;
+  paddle.x = Math.max(0, Math.min(pongCanvas.width-paddle.width, paddle.x));
+});
+
+function loopPong(){
+  ctxP.clearRect(0,0,pongCanvas.width,pongCanvas.height);
+  drawPaddle(); drawBall();
+
+  ball.x += ball.dx; ball.y += ball.dy;
+  if(ball.x<0 || ball.x>pongCanvas.width) ball.dx*=-1;
+  if(ball.y<0) ball.dy*=-1;
+
+  if(ball.y>paddle.y-ball.radius && ball.x>paddle.x && ball.x<paddle.x+paddle.width){
+    ball.dy*=-1;
+  }
+
+  requestAnimationFrame(loopPong);
+}
+loopPong();
+
+// ================================
+// 2. SVG Coin Collection Game
+// ================================
+const player = document.getElementById("player");
+const coins = document.querySelectorAll(".coin");
+let px=60, py=90;
+
+document.addEventListener("keydown", e=>{
+  if(e.key==="ArrowUp") py-=10;
+  if(e.key==="ArrowDown") py+=10;
+  if(e.key==="ArrowLeft") px-=10;
+  if(e.key==="ArrowRight") px+=10;
+
+  px = Math.max(15, Math.min(405, px));
+  py = Math.max(15, Math.min(185, py));
+
+  player.setAttribute("cx", px);
+  player.setAttribute("cy", py);
+
+  checkCollisions();
+});
+
+function hit(a,b){
+  const dx=a.x-b.x, dy=a.y-b.y;
+  return Math.sqrt(dx*dx + dy*dy) < 25;
+}
+
+function checkCollisions(){
+  coins.forEach(coin=>{
+    const cx=+coin.getAttribute("cx");
+    const cy=+coin.getAttribute("cy");
+    if(hit({x:px,y:py},{x:cx,y:cy})) coin.style.display="none";
+  });
+}
+
+// ================================
+// 3. Canvas to PNG Export
+// ================================
+const exportCanvas = document.getElementById("exportCanvas");
+const ctxE = exportCanvas.getContext("2d");
+ctxE.fillStyle = "orange";
+ctxE.fillRect(30, 30, 140, 90);
+
+document.getElementById("saveBtn").onclick = ()=>{
+  const link = document.createElement("a");
+  link.download = "canvas-image.png";
+  link.href = exportCanvas.toDataURL("image/png");
+  link.click();
+};
+
+// ================================
+// 4. HSL / HSLA Color Demo
+// ================================
+const hue = document.getElementById("hue");
+const sat = document.getElementById("sat");
+const light = document.getElementById("light");
+const alpha = document.getElementById("alpha");
+const colorBox = document.getElementById("colorBox");
+
+function updateColor(){
+  const h = hue.value;
+  const s = sat.value;
+  const l = light.value;
+  const a = alpha.value;
+  colorBox.style.backgroundColor = `hsla(${h},${s}%,${l}%,${a})`;
+}
+[hue,sat,light,alpha].forEach(el=>el.addEventListener("input", updateColor));
+updateColor();
+
+</script>
+</body>
+</html>
