@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>D3.js Mastering Data Updates</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  h2 { margin-top: 40px; }
+  svg { border: 1px solid #ccc; margin: 10px 0; }
+  .bar:hover { fill: orange; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>D3.js Mastering Data Updates</h1>
+
+<h2>1. Dynamic Bar Chart (Enter → Update → Exit)</h2>
+<label>Elements:
+  <input type="range" id="barCount" min="1" max="10" value="5" oninput="updateBarChart()">
+</label>
+<svg id="barChart" width="500" height="250"></svg>
+
+<h2>2. Shapes (Circle, Ellipse, Rectangle) with HSL Colors</h2>
+<svg id="shapesChart" width="500" height="200"></svg>
+
+<h2>3. Pie Chart</h2>
+<svg id="pieChart" width="300" height="300"></svg>
+
+<h2>4. Line Chart</h2>
+<svg id="lineChart" width="500" height="250"></svg>
+
+<script>
+// ===== 1. Bar Chart with Enter-Update-Exit =====
+const barSvg = d3.select("#barChart");
+const barWidth = 500, barHeight = 250;
+const barXScale = d3.scaleBand().range([0, barWidth]).padding(0.2);
+const barYScale = d3.scaleLinear().range([barHeight, 0]);
+
+let barData = Array.from({length: 5}, () => Math.floor(Math.random()*100));
+
+function updateBarChart() {
+    const count = +document.getElementById("barCount").value;
+    barData = Array.from({length: count}, () => Math.floor(Math.random()*100));
+
+    barXScale.domain(barData.map((d,i)=>i));
+    barYScale.domain([0, d3.max(barData)]);
+
+    const bars = barSvg.selectAll("rect").data(barData);
+
+    // UPDATE
+    bars.attr("x",(d,i)=>barXScale(i))
+        .attr("y", d=>barYScale(d))
+        .attr("width", barXScale.bandwidth())
+        .attr("height", d=>barHeight-barYScale(d));
+
+    // ENTER
+    bars.enter().append("rect")
+        .attr("x",(d,i)=>barXScale(i))
+        .attr("y", barHeight)
+        .attr("width", barXScale.bandwidth())
+        .attr("height",0)
+        .attr("fill", (d,i)=>`hsl(${i*40},70%,50%)`)
+        .transition()
+        .duration(500)
+        .attr("y", d=>barYScale(d))
+        .attr("height", d=>barHeight-barYScale(d));
+
+    // EXIT
+    bars.exit()
+        .transition().duration(500)
+        .attr("y", barHeight)
+        .attr("height",0)
+        .remove();
+}
+
+updateBarChart();
+
+// ===== 2. Shapes =====
+const shapesSvg = d3.select("#shapesChart");
+const shapesData = [
+    {type:"circle", cx:50, cy:50, r:30},
+    {type:"ellipse", cx:150, cy:70, rx:40, ry:20},
+    {type:"rect", x:250, y:30, width:60, height:60}
+];
+
+shapesSvg.selectAll("*")
+    .data(shapesData)
+    .enter()
+    .append(d => document.createElementNS(d3.namespaces.svg, d.type))
+    .attr("cx", d=>d.cx)
+    .attr("cy", d=>d.cy)
+    .attr("r", d=>d.r)
+    .attr("rx", d=>d.rx)
+    .attr("ry", d=>d.ry)
+    .attr("x", d=>d.x)
+    .attr("y", d=>d.y)
+    .attr("width", d=>d.width)
+    .attr("height", d=>d.height)
+    .attr("fill", (d,i)=>`hsl(${i*90},70%,50%)`);
+
+// ===== 3. Pie Chart =====
+const pieSvg = d3.select("#pieChart")
+    .append("g")
+    .attr("transform","translate(150,150)");
+
+const pieData = [30, 10, 20, 40];
+const pie = d3.pie()(pieData);
+const arc = d3.arc().innerRadius(0).outerRadius(100);
+
+pieSvg.selectAll("path")
+    .data(pie)
+    .enter()
+    .append("path")
+    .attr("d", arc)
+    .attr("fill", (d,i)=>`hsl(${i*90},70%,50%)`)
+    .attr("stroke","white")
+    .attr("stroke-width",2);
+
+// ===== 4. Line Chart =====
+const lineSvg = d3.select("#lineChart");
+const lineData = [
+    {x:0,y:20}, {x:50,y:80}, {x:100,y:50},
+    {x:150,y:120}, {x:200,y:70}
+];
+
+const lineX = d3.scaleLinear().domain([0,200]).range([0,500]);
+const lineY = d3.scaleLinear().domain([0,120]).range([250,0]);
+
+const lineGen = d3.line()
+    .x(d=>lineX(d.x))
+    .y(d=>lineY(d.y));
+
+lineSvg.append("path")
+    .datum(lineData)
+    .attr("d", lineGen)
+    .attr("fill","none")
+    .attr("stroke","steelblue")
+    .attr("stroke-width",2);
+
+</script>
+</body>
+</html>
