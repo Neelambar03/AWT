@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>D3.js Methods Demo</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  svg { border: 1px solid #ccc; margin-top: 20px; }
+  .bar:hover { fill: orange; }
+</style>
+</head>
+<body>
+
+<h2 id="title">D3.js Methods Demo</h2>
+
+<p>Hover over the bars to see interaction using <code>selection.on()</code>.</p>
+
+<svg id="chart" width="600" height="400"></svg>
+
+<script>
+// ===== 1. Dataset =====
+const data = [
+  { name: "A", value: 30 },
+  { name: "B", value: 80 },
+  { name: "C", value: 150 },
+  { name: "D", value: 50 },
+  { name: "E", value: 120 }
+];
+
+// ===== 2. Select SVG =====
+const svg = d3.select("#chart");
+
+// ===== 3. Scales =====
+const x = d3.scaleBand()
+  .domain(data.map(d => d.name))   // domain from data names
+  .range([50, 550])               // range in pixels
+  .padding(0.2);
+
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.value)]) // domain from 0 to max value
+  .range([350, 50]);                       // invert y-axis
+
+// ===== 4. Draw Axes =====
+const xAxis = d3.axisBottom(x);
+const yAxis = d3.axisLeft(y);
+
+svg.append("g")
+  .attr("transform", "translate(0,350)")
+  .call(xAxis);
+
+svg.append("g")
+  .attr("transform", "translate(50,0)")
+  .call(yAxis);
+
+// ===== 5. Draw Bars using Enter-Append =====
+svg.selectAll("rect")
+  .data(data)                  // bind data
+  .enter()                     // handle new data points
+  .append("rect")              // create a rect for each
+  .attr("x", d => x(d.name))  // x position
+  .attr("y", d => y(d.value)) // y position
+  .attr("width", x.bandwidth())
+  .attr("height", d => 350 - y(d.value)) // bar height
+  .attr("fill", "steelblue")
+  .on("mouseover", (event,d) => {
+      d3.select("#title").text(`Hovered over: ${d.name} = ${d.value}`);
+  })
+  .on("mouseout", () => {
+      d3.select("#title").text("D3.js Methods Demo");
+  });
+
+// ===== 6. Add Text Labels =====
+svg.selectAll("text.label")
+  .data(data)
+  .enter()
+  .append("text")
+  .attr("class", "label")
+  .attr("x", d => x(d.name) + x.bandwidth()/2)
+  .attr("y", d => y(d.value) - 5)
+  .attr("text-anchor", "middle")
+  .text(d => d.value)
+  .style("fill", "black")
+  .style("font-size", "12px");
+
+</script>
+
+</body>
+</html>

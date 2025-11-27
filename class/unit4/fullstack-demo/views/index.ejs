@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fullstack Demo</title>
+</head>
+<body>
+    <h1>Welcome <%= username %></h1>
+    <h2>Student List</h2>
+    <ul>
+        <% students.forEach(student => { %>
+            <li><%= student.name %> - <%= student.course %> - <%= student.marks %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>
