@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 <title>AngularJS To-Do App</title>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 <style>
-/* === Styles omitted for brevity, same as your original CSS === */
+/* === Add your CSS here (same as previous) === */
 </style>
 </head>
 <body ng-controller="MainController">
