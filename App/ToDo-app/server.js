@@ -13,9 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 // ================================
 // DATABASE
 // ================================
-mongoose.connect("mongodb://localhost:27017/todoApp")
+
+mongoose.connect("mongodb+srv://neelambar:Nilambar%4012@todoapp.onl1rbv.mongodb.net/todoApp?retryWrites=true&w=majority")
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.error("❌ DB Error:", err));
+
 
 // ================================
 // SCHEMAS
