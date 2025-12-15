@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Application – Exam Questions & Answers</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            margin-top: 30px;
+        }
+        h2 {
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+        p {
+            text-align: justify;
+        }
+        ul {
+            margin-left: 40px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .diagram {
+            font-family: monospace;
+            margin: 15px;
+            padding: 10px;
+            border: 1px solid #000;
+            width: fit-content;
+        }
+        .section {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>TODO APPLICATION</h1>
+<h3>Exam-Oriented Questions and Answers</h3>
+
+<div class="section">
+<h2>Q1. Explain the complete architecture of a Todo Application with neat diagrams.</h2>
+
+<p>
+A <b>Todo Application</b> is a web-based application used to manage daily activities such as adding, updating, deleting, and viewing tasks.
+The complete architecture of a Todo application is divided into <b>Frontend, Backend, Database, and Authentication layers</b>.
+</p>
+
+<h3>Frontend Layer</h3>
+<p>
+The frontend is the user interface of the application. It is developed using frameworks such as React, Angular, or Vue.
+It includes components like Todo Input, Todo List, and Filter components.
+</p>
+
+<h3>Backend Layer</h3>
+<p>
+The backend is developed using Node.js and Express.js. It provides REST APIs to handle client requests and perform business logic.
+</p>
+
+<h3>Database Layer</h3>
+<p>
+MongoDB is used to store user data and todo information. Mongoose is used for schema definition and validation.
+</p>
+
+<h3>Authentication Layer</h3>
+<p>
+Authentication is implemented using bcrypt for password hashing and express-session for session management.
+</p>
+
+<div class="diagram">
+User<br>
+↓<br>
+Browser (Frontend)<br>
+↓ HTTP Requests<br>
+Server (Express)<br>
+↓<br>
+MongoDB Database
+</div>
+
+<p>
+<b>Conclusion:</b> The layered architecture ensures scalability, security, and maintainability of the Todo application.
+</p>
+</div>
+
+<div class="section">
+<h2>Q2. Describe the frontend architecture of a Todo Application.</h2>
+
+<p>
+The frontend architecture of a Todo application follows a component-based approach.
+Each component is responsible for a specific function.
+</p>
+
+<ul>
+    <li><b>Input Component:</b> Accepts user input</li>
+    <li><b>List Component:</b> Displays all tasks</li>
+    <li><b>Item Component:</b> Represents a single todo</li>
+    <li><b>Filter Component:</b> Filters tasks</li>
+</ul>
+
+<p>
+State management ensures that whenever data changes, the UI automatically updates.
+</p>
+
+<div class="diagram">
+User Action → State Change → UI Re-render
+</div>
+
+<p>
+<b>Conclusion:</b> Component-based design improves code reusability and clarity.
+</p>
+</div>
+
+<div class="section">
+<h2>Q3. Explain LocalStorage and MongoDB. Compare them.</h2>
+
+<h3>LocalStorage</h3>
+<p>
+LocalStorage is a client-side storage mechanism used to store small amounts of data in the browser.
+It is simple but not secure.
+</p>
+
+<h3>MongoDB</h3>
+<p>
+MongoDB is a NoSQL database that stores data in JSON-like documents.
+It is secure, scalable, and suitable for multi-user applications.
+</p>
+
+<table>
+<tr>
+    <th>Feature</th>
+    <th>LocalStorage</th>
+    <th>MongoDB</th>
+</tr>
+<tr>
+    <td>Storage Location</td>
+    <td>Browser</td>
+    <td>Server</td>
+</tr>
+<tr>
+    <td>Security</td>
+    <td>Low</td>
+    <td>High</td>
+</tr>
+<tr>
+    <td>Scalability</td>
+    <td>No</td>
+    <td>Yes</td>
+</tr>
+<tr>
+    <td>Multi-user Support</td>
+    <td>No</td>
+    <td>Yes</td>
+</tr>
+</table>
+
+<p>
+<b>Conclusion:</b> MongoDB is preferred for real-world web applications.
+</p>
+</div>
+
+<div class="section">
+<h2>Q4. Explain backend architecture using Node.js and Express.</h2>
+
+<p>
+The backend of a Todo application is built using Node.js and Express.js.
+It manages APIs, authentication, and database communication.
+</p>
+
+<ul>
+    <li><b>Routes:</b> Handle URL requests</li>
+    <li><b>Controllers:</b> Contain business logic</li>
+    <li><b>Models:</b> Define database structure</li>
+    <li><b>Middleware:</b> Process requests and responses</li>
+</ul>
+
+<p>
+<b>Conclusion:</b> Express provides a scalable and organized backend structure.
+</p>
+</div>
+
+<div class="section">
+<h2>Q5. Explain user authentication using bcrypt, express-session, and MongoDB.</h2>
+
+<p>
+User authentication verifies the identity of a user before granting access.
+</p>
+
+<h3>Registration</h3>
+<ul>
+    <li>User submits details</li>
+    <li>Password is hashed using bcrypt</li>
+    <li>Hashed password is stored in MongoDB</li>
+</ul>
+
+<h3>Login</h3>
+<ul>
+    <li>User enters credentials</li>
+    <li>Password is verified</li>
+    <li>Session is created using express-session</li>
+    <li>Session ID is stored in a cookie</li>
+</ul>
+
+<p>
+<b>Conclusion:</b> This approach ensures secure authentication.
+</p>
+</div>
+
+<div class="section">
+<h2>Q6. Explain session management in Node.js.</h2>
+
+<p>
+HTTP is a stateless protocol. Session management is used to maintain user login state.
+</p>
+
+<div class="diagram">
+Login Request<br>
+↓<br>
+Session Created<br>
+↓<br>
+Session ID stored in Cookie<br>
+↓<br>
+Session Validated
+</div>
+
+<p>
+<b>Conclusion:</b> Sessions help maintain continuous user interaction.
+</p>
+</div>
+
+<div class="section">
+<h2>Q7. Explain cookies and cookie-parser.</h2>
+
+<p>
+Cookies are small pieces of data stored in the browser.
+cookie-parser is middleware that reads cookies from request headers.
+</p>
+
+<p>
+<b>Conclusion:</b> Cookies play a key role in session management.
+</p>
+</div>
+
+<div class="section">
+<h2>Short Notes</h2>
+
+<ul>
+    <li><b>HTTP Statelessness:</b> HTTP does not remember previous requests.</li>
+    <li><b>REST API:</b> Uses GET, POST, PUT, DELETE methods.</li>
+    <li><b>Middleware:</b> Executes between request and response.</li>
+    <li><b>bcrypt:</b> Used for secure password hashing.</li>
+</ul>
+</div>
+
+</body>
+</html>

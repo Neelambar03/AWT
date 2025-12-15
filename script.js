@@ -61,67 +61,109 @@ const weatherDescriptions = {
 };
 
 async function reverseGeocode(lat, lon) {
-  const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+  const response = await fetch(url, { headers: { "User-Agent": "weather-app" } });
   const data = await response.json();
-  return data.address;
+  return data.address || {};
 }
 
 async function fetchWeather(lat, lon) {
-  const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+  const response = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+  );
   const data = await response.json();
   return data.current_weather;
 }
 
-getWeatherBtn.addEventListener('click', () => {
+function resetButton() {
+  getWeatherBtn.disabled = false;
+  getWeatherBtn.textContent = "📍 Get My Weather & Location";
+}
+
+function showGeoError(error) {
+  let msg = "";
+
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      msg = "Permission denied. Please allow location access in your browser.";
+      break;
+    case error.POSITION_UNAVAILABLE:
+      msg = "Location unavailable. Ensure Wi-Fi/location services are enabled.";
+      break;
+    case error.TIMEOUT:
+      msg = "Location request timed out. Please try again.";
+      break;
+    default:
+      msg = "Unknown geolocation error.";
+  }
+
+  alert(`Geolocation error (${error.code}): ${msg}`);
+  resetButton();
+}
+
+async function onGeoSuccess(position) {
+  const lat = position.coords.latitude.toFixed(5);
+  const lon = position.coords.longitude.toFixed(5);
+
+  document.getElementById("coordinates").textContent = `Lat: ${lat} | Lon: ${lon}`;
+
+  try {
+    // -----------------------
+    // Reverse Geocoding
+    // -----------------------
+    const address = await reverseGeocode(lat, lon);
+
+    const parts = [
+      address.house_number,
+      address.road,
+      address.neighbourhood,
+      address.suburb,
+      address.city || address.town || address.village,
+      address.county,
+      address.state,
+      address.postcode,
+      address.country
+    ];
+
+    const readable = parts.filter(Boolean).join(", ");
+    document.getElementById("location").textContent = readable || "Unknown location";
+
+    // -----------------------
+    // Weather
+    // -----------------------
+    const weather = await fetchWeather(lat, lon);
+
+    if (weather) {
+      document.getElementById("temperature").textContent = `${weather.temperature}°C`;
+      document.getElementById("condition").textContent =
+        weatherDescriptions[weather.weathercode] || "Unknown";
+      document.getElementById("wind").textContent = `${weather.windspeed} km/h`;
+    } else {
+      document.getElementById("condition").textContent = "Weather unavailable";
+    }
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("location").textContent = "⚠️ Error fetching data.";
+  }
+
+  resetButton();
+}
+
+getWeatherBtn.addEventListener("click", () => {
   getWeatherBtn.disabled = true;
-  getWeatherBtn.textContent = "⏳ Loading...";
+  getWeatherBtn.textContent = "⏳ Getting location...";
 
   if (!navigator.geolocation) {
     alert("Geolocation is not supported by your browser.");
-    getWeatherBtn.disabled = false;
-    getWeatherBtn.textContent = "📍 Get My Weather & Location";
+    resetButton();
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const lat = position.coords.latitude.toFixed(5);
-    const lon = position.coords.longitude.toFixed(5);
-    document.getElementById("coordinates").textContent = `Lat: ${lat} | Lon: ${lon}`;
-
-    try {
-      const address = await reverseGeocode(lat, lon);
-      const addressParts = [
-        address.house_number,
-        address.road,
-        address.neighbourhood,
-        address.suburb,
-        address.city || address.town || address.village,
-        address.county,
-        address.state,
-        address.postcode,
-        address.country
-      ];
-
-      const fullAddress = addressParts.filter(Boolean).join(', ');
-      document.getElementById("location").textContent = fullAddress || "Unknown location";
-
-      const weather = await fetchWeather(lat, lon);
-
-      document.getElementById("temperature").textContent = `${weather.temperature}°C`;
-      document.getElementById("condition").textContent = weatherDescriptions[weather.weathercode] || 'Unknown';
-      document.getElementById("wind").textContent = `${weather.windspeed} km/h`;
-
-    } catch (error) {
-      document.getElementById("location").textContent = "⚠️ Error fetching data.";
-      console.error(error);
-    } finally {
-      getWeatherBtn.disabled = false;
-      getWeatherBtn.textContent = "📍 Get My Weather & Location";
-    }
-
-  }, (error) => {
-    alert(`Geolocation error: ${error.message}`);
-    getWeatherBtn.disabled = false;
-    getWeatherBtn.textContent = "📍 Get My Weather & Location";
+  navigator.geolocation.getCurrentPosition(onGeoSuccess, showGeoError, {
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
   });
 });
+
